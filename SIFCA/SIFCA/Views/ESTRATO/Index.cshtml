@@ -1,0 +1,50 @@
+﻿@model IEnumerable<SIFCA.Models.ESTRATO>
+
+@{
+    ViewBag.Title = "Gestionar estratos";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+    <a href="@Url.Action("Create", "ESTRATO")" class="btn btn-primary"><i class="fa fa-plus "></i> Crear estrato</a>
+    <br />
+    <br />
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            Listado de estratos
+        </div>
+        <div class="panel-body">
+            <div class="table-responsive">
+                <table class="table table-striped table-bordered table-hover" id="dataTables">
+                    <thead>
+                        <tr>
+                            <th>
+                                Codigo estrato
+                            </th>
+                            <th>
+                                Descripcion estrato
+                            </th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr class="gradeA">
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.CODEST)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.DESCRIPESTRATO)
+                                </td>
+                                <td><a href="@Url.Action("Edit", "ESTRATO", new { id = item.CODEST })"><i class="fa fa-edit "></i>Editar</a></td>
+                                <td><a href="@Url.Action("Details", "ESTRATO", new { id = item.CODEST })" ><i class="fa fa-search "></i>Ver detalles</a></td>
+                                <td><a href="@Url.Action("Delete", "ESTRATO", new { id = item.CODEST })" class="delete-link"><i class="fa fa-pencil"></i>Eliminar</a></td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+</div>
+</div>

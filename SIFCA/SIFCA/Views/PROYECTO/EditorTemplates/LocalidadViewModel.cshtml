@@ -1,0 +1,12 @@
+﻿@model SIFCA.Models.LocalidadViewModel
+
+<tr class="gradeA">
+    <td>
+        @Html.HiddenFor(model => model.Nombre)
+        @Html.DisplayFor(model => model.Nombre)
+    </td>
+    <td>
+        @Html.HiddenFor(model => model.codLocalidad)
+        @Html.CheckBoxFor(model => model.Seleccionar)
+    </td>
+</tr>

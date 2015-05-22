@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="e1147c93dc0148f9aa72401f16fbf2a3" Name="SIFCA">
+        <EntityTypeShape EntityType="SIFCAModel.BLOQUE" Width="1.5" PointX="8.25" PointY="10.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="SIFCAModel.CONFIGURACIONUNIDADMUESTRAL" Width="1.5" PointX="8.25" PointY="13.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SIFCAModel.COSTO" Width="1.5" PointX="9" PointY="4.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="SIFCAModel.DOMINIO" Width="1.5" PointX="0.75" PointY="10" IsExpanded="true" />
+        <EntityTypeShape EntityType="SIFCAModel.ESPECIE" Width="1.5" PointX="3.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SIFCAModel.ESTRATO" Width="1.5" PointX="8.25" PointY="17.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="SIFCAModel.FORMULA" Width="1.5" PointX="3" PointY="5.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="SIFCAModel.FORMULARIO" Width="1.5" PointX="10.5" PointY="22.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="SIFCAModel.FORMULAVARIABLE" Width="1.5" PointX="5.25" PointY="7.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="SIFCAModel.GRUPOCOMERCIAL" Width="1.5" PointX="1.5" PointY="2.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="SIFCAModel.IMAGEN" Width="1.5" PointX="6" PointY="4.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="SIFCAModel.LINEAINVENTARIO" Width="1.5" PointX="3" PointY="13.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SIFCAModel.LINEAINVENTARIOVARIABLE" Width="1.5" PointX="8.25" PointY="7.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SIFCAModel.LISTADODECOSTOS" Width="1.5" PointX="11.25" PointY="13.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="SIFCAModel.LISTADODEESTRATOS" Width="1.5" PointX="11.25" PointY="10.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SIFCAModel.LOCALIDAD" Width="1.5" PointX="3.75" PointY="17" IsExpanded="true" />
+        <EntityTypeShape EntityType="SIFCAModel.OBJETIVOINVENTARIO" Width="1.5" PointX="3.75" PointY="20" IsExpanded="true" />
+        <EntityTypeShape EntityType="SIFCAModel.PARCELA" Width="1.5" PointX="8.25" PointY="23" IsExpanded="true" />
+        <EntityTypeShape EntityType="SIFCAModel.PROYECTO" Width="1.5" PointX="6" PointY="10.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SIFCAModel.TIPOFORMULA" Width="1.5" PointX="0.75" PointY="6" IsExpanded="true" />
+        <EntityTypeShape EntityType="SIFCAModel.TIPOLINEAINVENTARIO" Width="1.5" PointX="0.75" PointY="13.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SIFCAModel.TSTUDENT" Width="1.5" PointX="8.75" PointY="2.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="SIFCAModel.USUARIO" Width="1.5" PointX="3.75" PointY="22.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="SIFCAModel.VARIABLE" Width="1.5" PointX="3" PointY="9.375" IsExpanded="true" />
+        <AssociationConnector Association="SIFCAModel.FK_BLOQUE_TIENE_PROYECTO" ManuallyRouted="false" />
+        <AssociationConnector Association="SIFCAModel.FK_PROYECTO_CONTENEDOR" ManuallyRouted="false" />
+        <AssociationConnector Association="SIFCAModel.FK_PROYECTO_TIENE_CONFIGURACION_UNIDADMUESTRAL" ManuallyRouted="false" />
+        <AssociationConnector Association="SIFCAModel.FK_LISTADODECOSTOS_TIENE_COSTO" ManuallyRouted="false" />
+        <AssociationConnector Association="SIFCAModel.FK_ESPECIE_PERTENECE_GRUPOCOMERCIAL" ManuallyRouted="false" />
+        <AssociationConnector Association="SIFCAModel.FK_ESPECIE_TIENE_IMAGEN" ManuallyRouted="false" />
+        <AssociationConnector Association="SIFCAModel.FK_FORMULARIO_TIENE_ESTRATO" ManuallyRouted="false" />
+        <AssociationConnector Association="SIFCAModel.FK_LISTADEESTRATOS_TIENE_ESTRATOS" ManuallyRouted="false" />
+        <AssociationConnector Association="SIFCAModel.FK_FORMULA_ES_DE_TIPO_FORMULA" ManuallyRouted="false" />
+        <AssociationConnector Association="SIFCAModel.FK_FORMULA_TIENE_VARIABLE" ManuallyRouted="false" />
+        <AssociationConnector Association="SIFCAModel.FK_FORMULARIO_CREA_LINEAINEVNTARIO" ManuallyRouted="false" />
+        <AssociationConnector Association="SIFCAModel.FK_PARCELA_TIENE_FORMULARIO" ManuallyRouted="false" />
+        <AssociationConnector Association="SIFCAModel.FK_USUARIO_CREA_FOMULARIO" ManuallyRouted="false" />
+        <AssociationConnector Association="SIFCAModel.FK_VARIABLE_SE_APLICA_FORMULA" ManuallyRouted="false" />
+        <AssociationConnector Association="SIFCAModel.FK_LINEA_INVENTARIO_ES_DE_TIPOLINEAINV" ManuallyRouted="false" />
+        <AssociationConnector Association="SIFCAModel.FK_VARIABLES_SE_APLICA_LINEAINVENTARIO" ManuallyRouted="false" />
+        <AssociationConnector Association="SIFCAModel.FK_LINEAINVENTARIO_TIENE_VARIABLES" ManuallyRouted="false" />
+        <AssociationConnector Association="SIFCAModel.FK_PROYECTO_TIENE_LISTADODECOSTOS" ManuallyRouted="false" />
+        <AssociationConnector Association="SIFCAModel.FK_PROYECTO_TIENE_LISTADODEESTRATOS" ManuallyRouted="false" />
+        <AssociationConnector Association="SIFCAModel.FK_LOCALIDAD_ESTA_CONTENIDA_LOCALIDAD" ManuallyRouted="false" />
+        <AssociationConnector Association="SIFCAModel.FK_PROYECTO_TIENE_OBJETIVOINVENTARIO" ManuallyRouted="false" />
+        <AssociationConnector Association="SIFCAModel.FK_PROYECTO_TIENE_PARCELAS" ManuallyRouted="false" />
+        <AssociationConnector Association="SIFCAModel.FK_USUARIO_CREA_PROYECTO" ManuallyRouted="false" />
+        <AssociationConnector Association="SIFCAModel.DOMINIOVARIABLE" ManuallyRouted="false" />
+        <AssociationConnector Association="SIFCAModel.FORMULAPROYECTO" ManuallyRouted="false" />
+        <AssociationConnector Association="SIFCAModel.LINEAINVENTARIOESPECIE" ManuallyRouted="false" />
+        <AssociationConnector Association="SIFCAModel.LISTADODEESPECIES" ManuallyRouted="false" />
+        <AssociationConnector Association="SIFCAModel.LOCALIDADPROYECTO" ManuallyRouted="false" />
+        <AssociationConnector Association="SIFCAModel.TIPOLINEAINVENTARIOPROYECTO" ManuallyRouted="false" />
+        <AssociationConnector Association="SIFCAModel.TIPOLINEAINVENTARIOVARIABLE" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

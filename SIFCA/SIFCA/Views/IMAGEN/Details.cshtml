@@ -1,0 +1,51 @@
+﻿@model SIFCA.Models.IMAGEN
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>IMAGEN</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.DESCRIPCION)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DESCRIPCION)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.NOMBRE)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.NOMBRE)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.RUTA)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.RUTA)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ESPECIE.GRUPOCOM)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ESPECIE.GRUPOCOM)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

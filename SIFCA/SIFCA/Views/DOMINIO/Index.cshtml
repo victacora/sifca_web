@@ -1,0 +1,50 @@
+﻿@model IEnumerable<SIFCA.Models.DOMINIO>
+
+@{
+    ViewBag.Title = "Gestionar dominios";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<a href="@Url.Action("Create", "DOMINIO")" class="btn btn-primary"><i class="fa fa-plus "></i> Crear dominio</a>
+<br />
+<br />
+<div class="panel panel-default">
+    <div class="panel-heading">
+        Listado dominios
+    </div>
+    <div class="panel-body">
+        <div class="table-responsive">
+            <table class="table table-striped table-bordered table-hover" id="dataTables">
+                <thead>
+                    <tr>
+                        <th>
+                            Nombre
+                        </th>
+                        <th>
+                            Descripcion
+                        </th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr class="gradeA">
+                            <td>
+                                @Html.DisplayFor(modelItem => item.NOMBRE)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.DESCRIPCION)
+                            </td>
+                            <td><a href="@Url.Action("Edit", "DOMINIO", new { id = item.NRODOMINIO })"><i class="fa fa-edit "></i>Editar</a></td>
+                            <td><a href="@Url.Action("Details", "DOMINIO", new { id = item.NRODOMINIO })"><i class="fa fa-search "></i>Ver detalles</a></td>
+                            <td><a href="@Url.Action("Delete", "DOMINIO", new { id = item.NRODOMINIO })" class="delete-link"><i class="fa fa-pencil"></i>Eliminar</a></td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+</div>

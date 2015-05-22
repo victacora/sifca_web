@@ -1,0 +1,771 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="SIFCAModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="BLOQUE">
+    <Key>
+      <PropertyRef Name="NROPROYCONTENEDOR" />
+      <PropertyRef Name="NROPROYCONTENIDO" />
+    </Key>
+    <Property Name="NROPROYCONTENEDOR" Type="Guid" Nullable="false" />
+    <Property Name="NROPROYCONTENIDO" Type="Guid" Nullable="false" />
+    <Property Name="CODIGOBLOQUE" Type="Int32" Nullable="false" />
+    <Property Name="PESO" Type="Double" Nullable="false" />
+    <Property Name="ETAPA" Type="Int32" Nullable="false" />
+    <Property Name="CONFIGURACIONMAPA" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+    <NavigationProperty Name="PROYECTO" Relationship="Self.FK_BLOQUE_TIENE_PROYECTO" FromRole="BLOQUE" ToRole="PROYECTO" />
+    <NavigationProperty Name="PROYECTO1" Relationship="Self.FK_PROYECTO_CONTENEDOR" FromRole="BLOQUE" ToRole="PROYECTO" />
+  </EntityType>
+  <EntityType Name="CONFIGURACIONUNIDADMUESTRAL">
+    <Key>
+      <PropertyRef Name="NROCONFIGURACIONUNIDADMUESTRAL" />
+    </Key>
+    <Property Name="NROCONFIGURACIONUNIDADMUESTRAL" Type="Guid" Nullable="false" />
+    <Property Name="NROPROY" Type="Guid" Nullable="false" />
+    <Property Name="ANCHO" Type="Double" Nullable="false" />
+    <Property Name="LARGO" Type="Double" Nullable="false" />
+    <Property Name="RADIO" Type="Double" Nullable="false" />
+    <Property Name="FORMA" Type="String" MaxLength="2" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="TIPOUNIDADMUESTRAL" Type="String" MaxLength="1" FixedLength="false" Unicode="false" Nullable="false" />
+    <NavigationProperty Name="PROYECTO" Relationship="Self.FK_PROYECTO_TIENE_CONFIGURACION_UNIDADMUESTRAL" FromRole="CONFIGURACIONUNIDADMUESTRAL" ToRole="PROYECTO" />
+  </EntityType>
+  <EntityType Name="COSTO">
+    <Key>
+      <PropertyRef Name="NROCOSTO" />
+    </Key>
+    <Property Name="NROCOSTO" Type="Guid" Nullable="false" />
+    <Property Name="NOMBRE" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
+    <Property Name="DESCRIPCION" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+    <Property Name="TIPO" Type="String" MaxLength="2" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="LISTADODECOSTOS" Relationship="Self.FK_LISTADODECOSTOS_TIENE_COSTO" FromRole="COSTO" ToRole="LISTADODECOSTOS" />
+  </EntityType>
+  <EntityType Name="DOMINIO">
+    <Key>
+      <PropertyRef Name="NRODOMINIO" />
+    </Key>
+    <Property Name="NRODOMINIO" Type="Guid" Nullable="false" />
+    <Property Name="NOMBRE" Type="String" MaxLength="150" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="DESCRIPCION" Type="String" MaxLength="5000" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="VARIABLE" Relationship="Self.DOMINIOVARIABLE" FromRole="DOMINIO" ToRole="VARIABLE" />
+  </EntityType>
+  <EntityType Name="ESPECIE">
+    <Key>
+      <PropertyRef Name="CODESP" />
+    </Key>
+    <Property Name="CODESP" Type="Guid" Nullable="false" />
+    <Property Name="GRUPOCOM" Type="String" MaxLength="2" FixedLength="true" Unicode="false" Nullable="false" />
+    <Property Name="NOMCOMUN" Type="String" MaxLength="200" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="NOMCIENTIFICO" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+    <Property Name="FAMILIA" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+    <Property Name="ZONAGEOGRAFICA" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+    <Property Name="ZONADEVIDA" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+    <Property Name="DIAMMINCORTE" Type="Double" />
+    <Property Name="GRUPOECOLOGICO" Type="String" MaxLength="2" FixedLength="false" Unicode="false" Nullable="false" />
+    <NavigationProperty Name="GRUPOCOMERCIAL" Relationship="Self.FK_ESPECIE_PERTENECE_GRUPOCOMERCIAL" FromRole="ESPECIE" ToRole="GRUPOCOMERCIAL" />
+    <NavigationProperty Name="IMAGEN" Relationship="Self.FK_ESPECIE_TIENE_IMAGEN" FromRole="ESPECIE" ToRole="IMAGEN" />
+    <NavigationProperty Name="LINEAINVENTARIO" Relationship="Self.LINEAINVENTARIOESPECIE" FromRole="ESPECIE" ToRole="LINEAINVENTARIO" />
+    <NavigationProperty Name="PROYECTO" Relationship="Self.LISTADODEESPECIES" FromRole="ESPECIE" ToRole="PROYECTO" />
+  </EntityType>
+  <EntityType Name="ESTRATO">
+    <Key>
+      <PropertyRef Name="CODEST" />
+    </Key>
+    <Property Name="CODEST" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="DESCRIPESTRATO" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="FORMULARIO" Relationship="Self.FK_FORMULARIO_TIENE_ESTRATO" FromRole="ESTRATO" ToRole="FORMULARIO" />
+    <NavigationProperty Name="LISTADODEESTRATOS" Relationship="Self.FK_LISTADEESTRATOS_TIENE_ESTRATOS" FromRole="ESTRATO" ToRole="LISTADODEESTRATOS" />
+  </EntityType>
+  <EntityType Name="FORMULA">
+    <Key>
+      <PropertyRef Name="NROFORMULA" />
+    </Key>
+    <Property Name="NROFORMULA" Type="Guid" Nullable="false" />
+    <Property Name="NROTIPOFORMULA" Type="Guid" Nullable="false" />
+    <Property Name="EXPRESION" Type="String" MaxLength="5000" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="NOMBRE" Type="String" MaxLength="150" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="DESCRIPCION" Type="String" MaxLength="5000" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="TIPOFORMULA" Relationship="Self.FK_FORMULA_ES_DE_TIPO_FORMULA" FromRole="FORMULA" ToRole="TIPOFORMULA" />
+    <NavigationProperty Name="FORMULAVARIABLE" Relationship="Self.FK_FORMULA_TIENE_VARIABLE" FromRole="FORMULA" ToRole="FORMULAVARIABLE" />
+    <NavigationProperty Name="PROYECTO" Relationship="Self.FORMULAPROYECTO" FromRole="FORMULA" ToRole="PROYECTO" />
+  </EntityType>
+  <EntityType Name="FORMULARIO">
+    <Key>
+      <PropertyRef Name="NROFORMULARIO" />
+    </Key>
+    <Property Name="NROFORMULARIO" Type="Guid" Nullable="false" />
+    <Property Name="CODEST" Type="Int32" Nullable="false" />
+    <Property Name="NROUSUARIO" Type="Guid" Nullable="false" />
+    <Property Name="NROPROY" Type="Guid" Nullable="false" />
+    <Property Name="CODIGOPARCELA" Type="Int32" Nullable="false" />
+    <Property Name="FECHACREACION" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="HORAINICIO" Type="DateTime" Precision="3" />
+    <Property Name="HORAFINAL" Type="DateTime" Precision="3" />
+    <NavigationProperty Name="ESTRATO" Relationship="Self.FK_FORMULARIO_TIENE_ESTRATO" FromRole="FORMULARIO" ToRole="ESTRATO" />
+    <NavigationProperty Name="LINEAINVENTARIO" Relationship="Self.FK_FORMULARIO_CREA_LINEAINEVNTARIO" FromRole="FORMULARIO" ToRole="LINEAINVENTARIO" />
+    <NavigationProperty Name="PARCELA" Relationship="Self.FK_PARCELA_TIENE_FORMULARIO" FromRole="FORMULARIO" ToRole="PARCELA" />
+    <NavigationProperty Name="USUARIO" Relationship="Self.FK_USUARIO_CREA_FOMULARIO" FromRole="FORMULARIO" ToRole="USUARIO" />
+  </EntityType>
+  <EntityType Name="FORMULAVARIABLE">
+    <Key>
+      <PropertyRef Name="NROVARIABLE" />
+      <PropertyRef Name="NROFORMULA" />
+    </Key>
+    <Property Name="NROVARIABLE" Type="Guid" Nullable="false" />
+    <Property Name="NROFORMULA" Type="Guid" Nullable="false" />
+    <Property Name="TIPOVARIABLE" Type="String" MaxLength="1" FixedLength="false" Unicode="false" Nullable="false" />
+    <NavigationProperty Name="FORMULA" Relationship="Self.FK_FORMULA_TIENE_VARIABLE" FromRole="FORMULAVARIABLE" ToRole="FORMULA" />
+    <NavigationProperty Name="VARIABLE" Relationship="Self.FK_VARIABLE_SE_APLICA_FORMULA" FromRole="FORMULAVARIABLE" ToRole="VARIABLE" />
+  </EntityType>
+  <EntityType Name="GRUPOCOMERCIAL">
+    <Key>
+      <PropertyRef Name="GRUPOCOM" />
+    </Key>
+    <Property Name="GRUPOCOM" Type="String" MaxLength="2" FixedLength="true" Unicode="false" Nullable="false" />
+    <Property Name="DESCRIPGRUPO" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="ESPECIE" Relationship="Self.FK_ESPECIE_PERTENECE_GRUPOCOMERCIAL" FromRole="GRUPOCOMERCIAL" ToRole="ESPECIE" />
+  </EntityType>
+  <EntityType Name="IMAGEN">
+    <Key>
+      <PropertyRef Name="NROIMAGEN" />
+      <PropertyRef Name="CODESP" />
+    </Key>
+    <Property Name="NROIMAGEN" Type="Guid" Nullable="false" />
+    <Property Name="CODESP" Type="Guid" Nullable="false" />
+    <Property Name="DESCRIPCION" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
+    <Property Name="NOMBRE" Type="String" MaxLength="250" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="RUTA" Type="String" MaxLength="1500" FixedLength="false" Unicode="false" Nullable="false" />
+    <NavigationProperty Name="ESPECIE" Relationship="Self.FK_ESPECIE_TIENE_IMAGEN" FromRole="IMAGEN" ToRole="ESPECIE" />
+  </EntityType>
+  <EntityType Name="LINEAINVENTARIO">
+    <Key>
+      <PropertyRef Name="NROLINEAINVENTARIO" />
+    </Key>
+    <Property Name="NROLINEAINVENTARIO" Type="Guid" Nullable="false" />
+    <Property Name="NROFORMULARIO" Type="Guid" Nullable="false" />
+    <Property Name="NROTIPOLINEAINV" Type="Guid" Nullable="false" />
+    <NavigationProperty Name="FORMULARIO" Relationship="Self.FK_FORMULARIO_CREA_LINEAINEVNTARIO" FromRole="LINEAINVENTARIO" ToRole="FORMULARIO" />
+    <NavigationProperty Name="TIPOLINEAINVENTARIO" Relationship="Self.FK_LINEA_INVENTARIO_ES_DE_TIPOLINEAINV" FromRole="LINEAINVENTARIO" ToRole="TIPOLINEAINVENTARIO" />
+    <NavigationProperty Name="LINEAINVENTARIOVARIABLE" Relationship="Self.FK_VARIABLES_SE_APLICA_LINEAINVENTARIO" FromRole="LINEAINVENTARIO" ToRole="LINEAINVENTARIOVARIABLE" />
+    <NavigationProperty Name="ESPECIE" Relationship="Self.LINEAINVENTARIOESPECIE" FromRole="LINEAINVENTARIO" ToRole="ESPECIE" />
+  </EntityType>
+  <EntityType Name="LINEAINVENTARIOVARIABLE">
+    <Key>
+      <PropertyRef Name="NROVARIABLE" />
+      <PropertyRef Name="LINEAINV" />
+    </Key>
+    <Property Name="NROVARIABLE" Type="Guid" Nullable="false" />
+    <Property Name="LINEAINV" Type="Guid" Nullable="false" />
+    <Property Name="VALOR" Type="String" MaxLength="5000" FixedLength="false" Unicode="false" Nullable="false" />
+    <NavigationProperty Name="LINEAINVENTARIO" Relationship="Self.FK_VARIABLES_SE_APLICA_LINEAINVENTARIO" FromRole="LINEAINVENTARIOVARIABLE" ToRole="LINEAINVENTARIO" />
+    <NavigationProperty Name="VARIABLE" Relationship="Self.FK_LINEAINVENTARIO_TIENE_VARIABLES" FromRole="LINEAINVENTARIOVARIABLE" ToRole="VARIABLE" />
+  </EntityType>
+  <EntityType Name="LISTADODECOSTOS">
+    <Key>
+      <PropertyRef Name="NROCOSTO" />
+      <PropertyRef Name="NROPROY" />
+    </Key>
+    <Property Name="NROCOSTO" Type="Guid" Nullable="false" />
+    <Property Name="NROPROY" Type="Guid" Nullable="false" />
+    <Property Name="VALOR" Type="Double" Nullable="false" />
+    <NavigationProperty Name="COSTO" Relationship="Self.FK_LISTADODECOSTOS_TIENE_COSTO" FromRole="LISTADODECOSTOS" ToRole="COSTO" />
+    <NavigationProperty Name="PROYECTO" Relationship="Self.FK_PROYECTO_TIENE_LISTADODECOSTOS" FromRole="LISTADODECOSTOS" ToRole="PROYECTO" />
+  </EntityType>
+  <EntityType Name="LISTADODEESTRATOS">
+    <Key>
+      <PropertyRef Name="NROPROY" />
+      <PropertyRef Name="CODEST" />
+    </Key>
+    <Property Name="NROPROY" Type="Guid" Nullable="false" />
+    <Property Name="CODEST" Type="Int32" Nullable="false" />
+    <Property Name="PESO" Type="Double" />
+    <Property Name="TAMANIOMUESTRA" Type="Double" />
+    <Property Name="CONFIGURACIONMAPA" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+    <NavigationProperty Name="ESTRATO" Relationship="Self.FK_LISTADEESTRATOS_TIENE_ESTRATOS" FromRole="LISTADODEESTRATOS" ToRole="ESTRATO" />
+    <NavigationProperty Name="PROYECTO" Relationship="Self.FK_PROYECTO_TIENE_LISTADODEESTRATOS" FromRole="LISTADODEESTRATOS" ToRole="PROYECTO" />
+  </EntityType>
+  <EntityType Name="LOCALIDAD">
+    <Key>
+      <PropertyRef Name="CODLOCALIDAD" />
+    </Key>
+    <Property Name="CODLOCALIDAD" Type="Int32" Nullable="false" />
+    <Property Name="CODLOCALIDADPADRE" Type="Int32" />
+    <Property Name="NOMBRE" Type="String" MaxLength="1500" FixedLength="false" Unicode="false" Nullable="false" />
+    <NavigationProperty Name="LOCALIDAD1" Relationship="Self.FK_LOCALIDAD_ESTA_CONTENIDA_LOCALIDAD" FromRole="LOCALIDAD" ToRole="LOCALIDAD1" />
+    <NavigationProperty Name="LOCALIDAD2" Relationship="Self.FK_LOCALIDAD_ESTA_CONTENIDA_LOCALIDAD" FromRole="LOCALIDAD1" ToRole="LOCALIDAD" />
+    <NavigationProperty Name="PROYECTO" Relationship="Self.LOCALIDADPROYECTO" FromRole="LOCALIDAD" ToRole="PROYECTO" />
+  </EntityType>
+  <EntityType Name="OBJETIVOINVENTARIO">
+    <Key>
+      <PropertyRef Name="NOMBRETIPOINV" />
+    </Key>
+    <Property Name="NOMBRETIPOINV" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="DESCRIPOBJETINV" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="PROYECTO" Relationship="Self.FK_PROYECTO_TIENE_OBJETIVOINVENTARIO" FromRole="OBJETIVOINVENTARIO" ToRole="PROYECTO" />
+  </EntityType>
+  <EntityType Name="PARCELA">
+    <Key>
+      <PropertyRef Name="NROPROY" />
+      <PropertyRef Name="CODIGOPARCELA" />
+    </Key>
+    <Property Name="NROPROY" Type="Guid" Nullable="false" />
+    <Property Name="CODIGOPARCELA" Type="Int32" Nullable="false" />
+    <Property Name="LINEAPARCELA" Type="Int32" Nullable="false" />
+    <Property Name="CONFIGURACIONMAPA" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+    <NavigationProperty Name="FORMULARIO" Relationship="Self.FK_PARCELA_TIENE_FORMULARIO" FromRole="PARCELA" ToRole="FORMULARIO" />
+    <NavigationProperty Name="PROYECTO" Relationship="Self.FK_PROYECTO_TIENE_PARCELAS" FromRole="PARCELA" ToRole="PROYECTO" />
+  </EntityType>
+  <EntityType Name="PROYECTO">
+    <Key>
+      <PropertyRef Name="NROPROY" />
+    </Key>
+    <Property Name="NROPROY" Type="Guid" Nullable="false" />
+    <Property Name="NROUSUARIO" Type="Guid" Nullable="false" />
+    <Property Name="NOMBRETIPOINV" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="FECHA" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="NOMBRE" Type="String" MaxLength="150" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="DESCRIPCION" Type="String" MaxLength="5000" FixedLength="false" Unicode="false" />
+    <Property Name="PRESUPUESTO" Type="Double" Nullable="false" />
+    <Property Name="PLAZO" Type="Double" Nullable="false" />
+    <Property Name="TIPOPLAZO" Type="String" MaxLength="1" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="TIPOPROYECTO" Type="String" MaxLength="2" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="NUMEROPERSONAS" Type="Int32" Nullable="false" />
+    <Property Name="TIPODISENIOMUESTRAL" Type="String" MaxLength="1" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="SELECCIONALEATORIA" Type="String" MaxLength="1" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="CONFIANZA" Type="Double" Nullable="false" />
+    <Property Name="NUMEROPARCELAS" Type="Int32" Nullable="false" />
+    <Property Name="NUMEROPARCELASAMUESTREAR" Type="Int32" Nullable="false" />
+    <Property Name="TAMANIOPARCELA" Type="Double" Nullable="false" />
+    <Property Name="AREATOTAL" Type="Double" Nullable="false" />
+    <Property Name="INTMUESTREO" Type="Double" Nullable="false" />
+    <Property Name="AREAMUESTREAR" Type="Double" Nullable="false" />
+    <Property Name="LIMITINFDAP" Type="Double" Nullable="false" />
+    <Property Name="AREAREGENERACION" Type="Double" Nullable="false" />
+    <Property Name="FACTORDEFORMA" Type="Double" Nullable="false" />
+    <Property Name="ETAPA" Type="Int32" Nullable="false" />
+    <Property Name="CONFIGURACIONMAPA" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="BLOQUE" Relationship="Self.FK_BLOQUE_TIENE_PROYECTO" FromRole="PROYECTO" ToRole="BLOQUE" />
+    <NavigationProperty Name="BLOQUE1" Relationship="Self.FK_PROYECTO_CONTENEDOR" FromRole="PROYECTO" ToRole="BLOQUE" />
+    <NavigationProperty Name="CONFIGURACIONUNIDADMUESTRAL" Relationship="Self.FK_PROYECTO_TIENE_CONFIGURACION_UNIDADMUESTRAL" FromRole="PROYECTO" ToRole="CONFIGURACIONUNIDADMUESTRAL" />
+    <NavigationProperty Name="LISTADODECOSTOS" Relationship="Self.FK_PROYECTO_TIENE_LISTADODECOSTOS" FromRole="PROYECTO" ToRole="LISTADODECOSTOS" />
+    <NavigationProperty Name="LISTADODEESTRATOS" Relationship="Self.FK_PROYECTO_TIENE_LISTADODEESTRATOS" FromRole="PROYECTO" ToRole="LISTADODEESTRATOS" />
+    <NavigationProperty Name="OBJETIVOINVENTARIO" Relationship="Self.FK_PROYECTO_TIENE_OBJETIVOINVENTARIO" FromRole="PROYECTO" ToRole="OBJETIVOINVENTARIO" />
+    <NavigationProperty Name="PARCELA" Relationship="Self.FK_PROYECTO_TIENE_PARCELAS" FromRole="PROYECTO" ToRole="PARCELA" />
+    <NavigationProperty Name="USUARIO" Relationship="Self.FK_USUARIO_CREA_PROYECTO" FromRole="PROYECTO" ToRole="USUARIO" />
+    <NavigationProperty Name="FORMULA" Relationship="Self.FORMULAPROYECTO" FromRole="PROYECTO" ToRole="FORMULA" />
+    <NavigationProperty Name="ESPECIE" Relationship="Self.LISTADODEESPECIES" FromRole="PROYECTO" ToRole="ESPECIE" />
+    <NavigationProperty Name="LOCALIDAD" Relationship="Self.LOCALIDADPROYECTO" FromRole="PROYECTO" ToRole="LOCALIDAD" />
+    <NavigationProperty Name="TIPOLINEAINVENTARIO" Relationship="Self.TIPOLINEAINVENTARIOPROYECTO" FromRole="PROYECTO" ToRole="TIPOLINEAINVENTARIO" />
+  </EntityType>
+  <EntityType Name="TIPOFORMULA">
+    <Key>
+      <PropertyRef Name="NROTIPOFORMULA" />
+    </Key>
+    <Property Name="NROTIPOFORMULA" Type="Guid" Nullable="false" />
+    <Property Name="NOMBRETIPO" Type="String" MaxLength="150" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="DESCRIPCION" Type="String" MaxLength="5000" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="FORMULA" Relationship="Self.FK_FORMULA_ES_DE_TIPO_FORMULA" FromRole="TIPOFORMULA" ToRole="FORMULA" />
+  </EntityType>
+  <EntityType Name="TIPOLINEAINVENTARIO">
+    <Key>
+      <PropertyRef Name="NROTIPOLINEAINV" />
+    </Key>
+    <Property Name="NROTIPOLINEAINV" Type="Guid" Nullable="false" />
+    <Property Name="NOMBRE" Type="String" MaxLength="150" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="DESCRIPCION" Type="String" MaxLength="5000" FixedLength="false" Unicode="false" />
+    <Property Name="REQUIEREESPECIE" Type="String" MaxLength="1" FixedLength="false" Unicode="false" Nullable="false" />
+    <NavigationProperty Name="LINEAINVENTARIO" Relationship="Self.FK_LINEA_INVENTARIO_ES_DE_TIPOLINEAINV" FromRole="TIPOLINEAINVENTARIO" ToRole="LINEAINVENTARIO" />
+    <NavigationProperty Name="PROYECTO" Relationship="Self.TIPOLINEAINVENTARIOPROYECTO" FromRole="TIPOLINEAINVENTARIO" ToRole="PROYECTO" />
+    <NavigationProperty Name="VARIABLE" Relationship="Self.TIPOLINEAINVENTARIOVARIABLE" FromRole="TIPOLINEAINVENTARIO" ToRole="VARIABLE" />
+  </EntityType>
+  <EntityType Name="TSTUDENT">
+    <Key>
+      <PropertyRef Name="N" />
+      <PropertyRef Name="ALPHA" />
+      <PropertyRef Name="VALOR" />
+    </Key>
+    <Property Name="N" Type="Int32" Nullable="false" />
+    <Property Name="ALPHA" Type="Double" Nullable="false" />
+    <Property Name="VALOR" Type="Double" Nullable="false" />
+  </EntityType>
+  <EntityType Name="USUARIO">
+    <Key>
+      <PropertyRef Name="NROUSUARIO" />
+    </Key>
+    <Property Name="NROUSUARIO" Type="Guid" Nullable="false" />
+    <Property Name="NOMBRES" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="APELLIDOS" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="NOMBREUSUARIO" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="CONTRASENA" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="CEDULA" Type="Int32" Nullable="false" />
+    <Property Name="TIPOUSUARIO" Type="String" MaxLength="2" FixedLength="false" Unicode="false" Nullable="false" />
+    <NavigationProperty Name="FORMULARIO" Relationship="Self.FK_USUARIO_CREA_FOMULARIO" FromRole="USUARIO" ToRole="FORMULARIO" />
+    <NavigationProperty Name="PROYECTO" Relationship="Self.FK_USUARIO_CREA_PROYECTO" FromRole="USUARIO" ToRole="PROYECTO" />
+  </EntityType>
+  <EntityType Name="VARIABLE">
+    <Key>
+      <PropertyRef Name="NROVARIABLE" />
+    </Key>
+    <Property Name="NROVARIABLE" Type="Guid" Nullable="false" />
+    <Property Name="ABREVIATURA" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="NOMBRE" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="DESCRIPCION" Type="String" MaxLength="5000" FixedLength="false" Unicode="false" />
+    <Property Name="VARIABLEDESCRIPTIVA" Type="String" MaxLength="1" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="TIPODOMINIO" Type="String" MaxLength="1" FixedLength="false" Unicode="false" Nullable="false" />
+    <NavigationProperty Name="FORMULAVARIABLE" Relationship="Self.FK_VARIABLE_SE_APLICA_FORMULA" FromRole="VARIABLE" ToRole="FORMULAVARIABLE" />
+    <NavigationProperty Name="LINEAINVENTARIOVARIABLE" Relationship="Self.FK_LINEAINVENTARIO_TIENE_VARIABLES" FromRole="VARIABLE" ToRole="LINEAINVENTARIOVARIABLE" />
+    <NavigationProperty Name="DOMINIO" Relationship="Self.DOMINIOVARIABLE" FromRole="VARIABLE" ToRole="DOMINIO" />
+    <NavigationProperty Name="TIPOLINEAINVENTARIO" Relationship="Self.TIPOLINEAINVENTARIOVARIABLE" FromRole="VARIABLE" ToRole="TIPOLINEAINVENTARIO" />
+  </EntityType>
+  <Association Name="FK_BLOQUE_TIENE_PROYECTO">
+    <End Role="PROYECTO" Type="Self.PROYECTO" Multiplicity="1" />
+    <End Role="BLOQUE" Type="Self.BLOQUE" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="PROYECTO">
+        <PropertyRef Name="NROPROY" />
+      </Principal>
+      <Dependent Role="BLOQUE">
+        <PropertyRef Name="NROPROYCONTENIDO" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_PROYECTO_CONTENEDOR">
+    <End Role="PROYECTO" Type="Self.PROYECTO" Multiplicity="1" />
+    <End Role="BLOQUE" Type="Self.BLOQUE" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="PROYECTO">
+        <PropertyRef Name="NROPROY" />
+      </Principal>
+      <Dependent Role="BLOQUE">
+        <PropertyRef Name="NROPROYCONTENEDOR" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_PROYECTO_TIENE_CONFIGURACION_UNIDADMUESTRAL">
+    <End Role="PROYECTO" Type="Self.PROYECTO" Multiplicity="1" />
+    <End Role="CONFIGURACIONUNIDADMUESTRAL" Type="Self.CONFIGURACIONUNIDADMUESTRAL" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="PROYECTO">
+        <PropertyRef Name="NROPROY" />
+      </Principal>
+      <Dependent Role="CONFIGURACIONUNIDADMUESTRAL">
+        <PropertyRef Name="NROPROY" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_LISTADODECOSTOS_TIENE_COSTO">
+    <End Role="COSTO" Type="Self.COSTO" Multiplicity="1" />
+    <End Role="LISTADODECOSTOS" Type="Self.LISTADODECOSTOS" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="COSTO">
+        <PropertyRef Name="NROCOSTO" />
+      </Principal>
+      <Dependent Role="LISTADODECOSTOS">
+        <PropertyRef Name="NROCOSTO" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_ESPECIE_PERTENECE_GRUPOCOMERCIAL">
+    <End Role="GRUPOCOMERCIAL" Type="Self.GRUPOCOMERCIAL" Multiplicity="1" />
+    <End Role="ESPECIE" Type="Self.ESPECIE" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="GRUPOCOMERCIAL">
+        <PropertyRef Name="GRUPOCOM" />
+      </Principal>
+      <Dependent Role="ESPECIE">
+        <PropertyRef Name="GRUPOCOM" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_ESPECIE_TIENE_IMAGEN">
+    <End Role="ESPECIE" Type="Self.ESPECIE" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="IMAGEN" Type="Self.IMAGEN" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ESPECIE">
+        <PropertyRef Name="CODESP" />
+      </Principal>
+      <Dependent Role="IMAGEN">
+        <PropertyRef Name="CODESP" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_FORMULARIO_TIENE_ESTRATO">
+    <End Role="ESTRATO" Type="Self.ESTRATO" Multiplicity="1" />
+    <End Role="FORMULARIO" Type="Self.FORMULARIO" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ESTRATO">
+        <PropertyRef Name="CODEST" />
+      </Principal>
+      <Dependent Role="FORMULARIO">
+        <PropertyRef Name="CODEST" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_LISTADEESTRATOS_TIENE_ESTRATOS">
+    <End Role="ESTRATO" Type="Self.ESTRATO" Multiplicity="1" />
+    <End Role="LISTADODEESTRATOS" Type="Self.LISTADODEESTRATOS" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ESTRATO">
+        <PropertyRef Name="CODEST" />
+      </Principal>
+      <Dependent Role="LISTADODEESTRATOS">
+        <PropertyRef Name="CODEST" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_FORMULA_ES_DE_TIPO_FORMULA">
+    <End Role="TIPOFORMULA" Type="Self.TIPOFORMULA" Multiplicity="1" />
+    <End Role="FORMULA" Type="Self.FORMULA" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="TIPOFORMULA">
+        <PropertyRef Name="NROTIPOFORMULA" />
+      </Principal>
+      <Dependent Role="FORMULA">
+        <PropertyRef Name="NROTIPOFORMULA" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_FORMULA_TIENE_VARIABLE">
+    <End Role="FORMULA" Type="Self.FORMULA" Multiplicity="1" />
+    <End Role="FORMULAVARIABLE" Type="Self.FORMULAVARIABLE" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="FORMULA">
+        <PropertyRef Name="NROFORMULA" />
+      </Principal>
+      <Dependent Role="FORMULAVARIABLE">
+        <PropertyRef Name="NROFORMULA" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_FORMULARIO_CREA_LINEAINEVNTARIO">
+    <End Role="FORMULARIO" Type="Self.FORMULARIO" Multiplicity="1" />
+    <End Role="LINEAINVENTARIO" Type="Self.LINEAINVENTARIO" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="FORMULARIO">
+        <PropertyRef Name="NROFORMULARIO" />
+      </Principal>
+      <Dependent Role="LINEAINVENTARIO">
+        <PropertyRef Name="NROFORMULARIO" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_PARCELA_TIENE_FORMULARIO">
+    <End Role="PARCELA" Type="Self.PARCELA" Multiplicity="1" />
+    <End Role="FORMULARIO" Type="Self.FORMULARIO" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="PARCELA">
+        <PropertyRef Name="NROPROY" />
+        <PropertyRef Name="CODIGOPARCELA" />
+      </Principal>
+      <Dependent Role="FORMULARIO">
+        <PropertyRef Name="NROPROY" />
+        <PropertyRef Name="CODIGOPARCELA" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_USUARIO_CREA_FOMULARIO">
+    <End Role="USUARIO" Type="Self.USUARIO" Multiplicity="1" />
+    <End Role="FORMULARIO" Type="Self.FORMULARIO" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="USUARIO">
+        <PropertyRef Name="NROUSUARIO" />
+      </Principal>
+      <Dependent Role="FORMULARIO">
+        <PropertyRef Name="NROUSUARIO" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_VARIABLE_SE_APLICA_FORMULA">
+    <End Role="VARIABLE" Type="Self.VARIABLE" Multiplicity="1" />
+    <End Role="FORMULAVARIABLE" Type="Self.FORMULAVARIABLE" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="VARIABLE">
+        <PropertyRef Name="NROVARIABLE" />
+      </Principal>
+      <Dependent Role="FORMULAVARIABLE">
+        <PropertyRef Name="NROVARIABLE" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_LINEA_INVENTARIO_ES_DE_TIPOLINEAINV">
+    <End Role="TIPOLINEAINVENTARIO" Type="Self.TIPOLINEAINVENTARIO" Multiplicity="1" />
+    <End Role="LINEAINVENTARIO" Type="Self.LINEAINVENTARIO" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="TIPOLINEAINVENTARIO">
+        <PropertyRef Name="NROTIPOLINEAINV" />
+      </Principal>
+      <Dependent Role="LINEAINVENTARIO">
+        <PropertyRef Name="NROTIPOLINEAINV" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_VARIABLES_SE_APLICA_LINEAINVENTARIO">
+    <End Role="LINEAINVENTARIO" Type="Self.LINEAINVENTARIO" Multiplicity="1" />
+    <End Role="LINEAINVENTARIOVARIABLE" Type="Self.LINEAINVENTARIOVARIABLE" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="LINEAINVENTARIO">
+        <PropertyRef Name="NROLINEAINVENTARIO" />
+      </Principal>
+      <Dependent Role="LINEAINVENTARIOVARIABLE">
+        <PropertyRef Name="LINEAINV" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_LINEAINVENTARIO_TIENE_VARIABLES">
+    <End Role="VARIABLE" Type="Self.VARIABLE" Multiplicity="1" />
+    <End Role="LINEAINVENTARIOVARIABLE" Type="Self.LINEAINVENTARIOVARIABLE" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="VARIABLE">
+        <PropertyRef Name="NROVARIABLE" />
+      </Principal>
+      <Dependent Role="LINEAINVENTARIOVARIABLE">
+        <PropertyRef Name="NROVARIABLE" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_PROYECTO_TIENE_LISTADODECOSTOS">
+    <End Role="PROYECTO" Type="Self.PROYECTO" Multiplicity="1" />
+    <End Role="LISTADODECOSTOS" Type="Self.LISTADODECOSTOS" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="PROYECTO">
+        <PropertyRef Name="NROPROY" />
+      </Principal>
+      <Dependent Role="LISTADODECOSTOS">
+        <PropertyRef Name="NROPROY" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_PROYECTO_TIENE_LISTADODEESTRATOS">
+    <End Role="PROYECTO" Type="Self.PROYECTO" Multiplicity="1" />
+    <End Role="LISTADODEESTRATOS" Type="Self.LISTADODEESTRATOS" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="PROYECTO">
+        <PropertyRef Name="NROPROY" />
+      </Principal>
+      <Dependent Role="LISTADODEESTRATOS">
+        <PropertyRef Name="NROPROY" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_LOCALIDAD_ESTA_CONTENIDA_LOCALIDAD">
+    <End Role="LOCALIDAD" Type="Self.LOCALIDAD" Multiplicity="0..1" />
+    <End Role="LOCALIDAD1" Type="Self.LOCALIDAD" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="LOCALIDAD">
+        <PropertyRef Name="CODLOCALIDAD" />
+      </Principal>
+      <Dependent Role="LOCALIDAD1">
+        <PropertyRef Name="CODLOCALIDADPADRE" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_PROYECTO_TIENE_OBJETIVOINVENTARIO">
+    <End Role="OBJETIVOINVENTARIO" Type="Self.OBJETIVOINVENTARIO" Multiplicity="1" />
+    <End Role="PROYECTO" Type="Self.PROYECTO" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="OBJETIVOINVENTARIO">
+        <PropertyRef Name="NOMBRETIPOINV" />
+      </Principal>
+      <Dependent Role="PROYECTO">
+        <PropertyRef Name="NOMBRETIPOINV" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_PROYECTO_TIENE_PARCELAS">
+    <End Role="PROYECTO" Type="Self.PROYECTO" Multiplicity="1" />
+    <End Role="PARCELA" Type="Self.PARCELA" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="PROYECTO">
+        <PropertyRef Name="NROPROY" />
+      </Principal>
+      <Dependent Role="PARCELA">
+        <PropertyRef Name="NROPROY" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_USUARIO_CREA_PROYECTO">
+    <End Role="USUARIO" Type="Self.USUARIO" Multiplicity="1" />
+    <End Role="PROYECTO" Type="Self.PROYECTO" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="USUARIO">
+        <PropertyRef Name="NROUSUARIO" />
+      </Principal>
+      <Dependent Role="PROYECTO">
+        <PropertyRef Name="NROUSUARIO" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="DOMINIOVARIABLE">
+    <End Role="DOMINIO" Type="Self.DOMINIO" Multiplicity="*" />
+    <End Role="VARIABLE" Type="Self.VARIABLE" Multiplicity="*" />
+  </Association>
+  <Association Name="FORMULAPROYECTO">
+    <End Role="FORMULA" Type="Self.FORMULA" Multiplicity="*" />
+    <End Role="PROYECTO" Type="Self.PROYECTO" Multiplicity="*" />
+  </Association>
+  <Association Name="LINEAINVENTARIOESPECIE">
+    <End Role="ESPECIE" Type="Self.ESPECIE" Multiplicity="*" />
+    <End Role="LINEAINVENTARIO" Type="Self.LINEAINVENTARIO" Multiplicity="*" />
+  </Association>
+  <Association Name="LISTADODEESPECIES">
+    <End Role="ESPECIE" Type="Self.ESPECIE" Multiplicity="*" />
+    <End Role="PROYECTO" Type="Self.PROYECTO" Multiplicity="*" />
+  </Association>
+  <Association Name="LOCALIDADPROYECTO">
+    <End Role="LOCALIDAD" Type="Self.LOCALIDAD" Multiplicity="*" />
+    <End Role="PROYECTO" Type="Self.PROYECTO" Multiplicity="*" />
+  </Association>
+  <Association Name="TIPOLINEAINVENTARIOPROYECTO">
+    <End Role="TIPOLINEAINVENTARIO" Type="Self.TIPOLINEAINVENTARIO" Multiplicity="*" />
+    <End Role="PROYECTO" Type="Self.PROYECTO" Multiplicity="*" />
+  </Association>
+  <Association Name="TIPOLINEAINVENTARIOVARIABLE">
+    <End Role="TIPOLINEAINVENTARIO" Type="Self.TIPOLINEAINVENTARIO" Multiplicity="*" />
+    <End Role="VARIABLE" Type="Self.VARIABLE" Multiplicity="*" />
+  </Association>
+  <EntityContainer Name="Entities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="BLOQUE" EntityType="Self.BLOQUE" />
+    <EntitySet Name="CONFIGURACIONUNIDADMUESTRAL" EntityType="Self.CONFIGURACIONUNIDADMUESTRAL" />
+    <EntitySet Name="COSTO" EntityType="Self.COSTO" />
+    <EntitySet Name="DOMINIO" EntityType="Self.DOMINIO" />
+    <EntitySet Name="ESPECIE" EntityType="Self.ESPECIE" />
+    <EntitySet Name="ESTRATO" EntityType="Self.ESTRATO" />
+    <EntitySet Name="FORMULA" EntityType="Self.FORMULA" />
+    <EntitySet Name="FORMULARIO" EntityType="Self.FORMULARIO" />
+    <EntitySet Name="FORMULAVARIABLE" EntityType="Self.FORMULAVARIABLE" />
+    <EntitySet Name="GRUPOCOMERCIAL" EntityType="Self.GRUPOCOMERCIAL" />
+    <EntitySet Name="IMAGEN" EntityType="Self.IMAGEN" />
+    <EntitySet Name="LINEAINVENTARIO" EntityType="Self.LINEAINVENTARIO" />
+    <EntitySet Name="LINEAINVENTARIOVARIABLE" EntityType="Self.LINEAINVENTARIOVARIABLE" />
+    <EntitySet Name="LISTADODECOSTOS" EntityType="Self.LISTADODECOSTOS" />
+    <EntitySet Name="LISTADODEESTRATOS" EntityType="Self.LISTADODEESTRATOS" />
+    <EntitySet Name="LOCALIDAD" EntityType="Self.LOCALIDAD" />
+    <EntitySet Name="OBJETIVOINVENTARIO" EntityType="Self.OBJETIVOINVENTARIO" />
+    <EntitySet Name="PARCELA" EntityType="Self.PARCELA" />
+    <EntitySet Name="PROYECTO" EntityType="Self.PROYECTO" />
+    <EntitySet Name="TIPOFORMULA" EntityType="Self.TIPOFORMULA" />
+    <EntitySet Name="TIPOLINEAINVENTARIO" EntityType="Self.TIPOLINEAINVENTARIO" />
+    <EntitySet Name="TSTUDENT" EntityType="Self.TSTUDENT" />
+    <EntitySet Name="USUARIO" EntityType="Self.USUARIO" />
+    <EntitySet Name="VARIABLE" EntityType="Self.VARIABLE" />
+    <AssociationSet Name="FK_BLOQUE_TIENE_PROYECTO" Association="Self.FK_BLOQUE_TIENE_PROYECTO">
+      <End Role="PROYECTO" EntitySet="PROYECTO" />
+      <End Role="BLOQUE" EntitySet="BLOQUE" />
+    </AssociationSet>
+    <AssociationSet Name="FK_PROYECTO_CONTENEDOR" Association="Self.FK_PROYECTO_CONTENEDOR">
+      <End Role="PROYECTO" EntitySet="PROYECTO" />
+      <End Role="BLOQUE" EntitySet="BLOQUE" />
+    </AssociationSet>
+    <AssociationSet Name="FK_PROYECTO_TIENE_CONFIGURACION_UNIDADMUESTRAL" Association="Self.FK_PROYECTO_TIENE_CONFIGURACION_UNIDADMUESTRAL">
+      <End Role="PROYECTO" EntitySet="PROYECTO" />
+      <End Role="CONFIGURACIONUNIDADMUESTRAL" EntitySet="CONFIGURACIONUNIDADMUESTRAL" />
+    </AssociationSet>
+    <AssociationSet Name="FK_LISTADODECOSTOS_TIENE_COSTO" Association="Self.FK_LISTADODECOSTOS_TIENE_COSTO">
+      <End Role="COSTO" EntitySet="COSTO" />
+      <End Role="LISTADODECOSTOS" EntitySet="LISTADODECOSTOS" />
+    </AssociationSet>
+    <AssociationSet Name="FK_ESPECIE_PERTENECE_GRUPOCOMERCIAL" Association="Self.FK_ESPECIE_PERTENECE_GRUPOCOMERCIAL">
+      <End Role="GRUPOCOMERCIAL" EntitySet="GRUPOCOMERCIAL" />
+      <End Role="ESPECIE" EntitySet="ESPECIE" />
+    </AssociationSet>
+    <AssociationSet Name="FK_ESPECIE_TIENE_IMAGEN" Association="Self.FK_ESPECIE_TIENE_IMAGEN">
+      <End Role="ESPECIE" EntitySet="ESPECIE" />
+      <End Role="IMAGEN" EntitySet="IMAGEN" />
+    </AssociationSet>
+    <AssociationSet Name="FK_FORMULARIO_TIENE_ESTRATO" Association="Self.FK_FORMULARIO_TIENE_ESTRATO">
+      <End Role="ESTRATO" EntitySet="ESTRATO" />
+      <End Role="FORMULARIO" EntitySet="FORMULARIO" />
+    </AssociationSet>
+    <AssociationSet Name="FK_LISTADEESTRATOS_TIENE_ESTRATOS" Association="Self.FK_LISTADEESTRATOS_TIENE_ESTRATOS">
+      <End Role="ESTRATO" EntitySet="ESTRATO" />
+      <End Role="LISTADODEESTRATOS" EntitySet="LISTADODEESTRATOS" />
+    </AssociationSet>
+    <AssociationSet Name="FK_FORMULA_ES_DE_TIPO_FORMULA" Association="Self.FK_FORMULA_ES_DE_TIPO_FORMULA">
+      <End Role="TIPOFORMULA" EntitySet="TIPOFORMULA" />
+      <End Role="FORMULA" EntitySet="FORMULA" />
+    </AssociationSet>
+    <AssociationSet Name="FK_FORMULA_TIENE_VARIABLE" Association="Self.FK_FORMULA_TIENE_VARIABLE">
+      <End Role="FORMULA" EntitySet="FORMULA" />
+      <End Role="FORMULAVARIABLE" EntitySet="FORMULAVARIABLE" />
+    </AssociationSet>
+    <AssociationSet Name="FK_FORMULARIO_CREA_LINEAINEVNTARIO" Association="Self.FK_FORMULARIO_CREA_LINEAINEVNTARIO">
+      <End Role="FORMULARIO" EntitySet="FORMULARIO" />
+      <End Role="LINEAINVENTARIO" EntitySet="LINEAINVENTARIO" />
+    </AssociationSet>
+    <AssociationSet Name="FK_PARCELA_TIENE_FORMULARIO" Association="Self.FK_PARCELA_TIENE_FORMULARIO">
+      <End Role="PARCELA" EntitySet="PARCELA" />
+      <End Role="FORMULARIO" EntitySet="FORMULARIO" />
+    </AssociationSet>
+    <AssociationSet Name="FK_USUARIO_CREA_FOMULARIO" Association="Self.FK_USUARIO_CREA_FOMULARIO">
+      <End Role="USUARIO" EntitySet="USUARIO" />
+      <End Role="FORMULARIO" EntitySet="FORMULARIO" />
+    </AssociationSet>
+    <AssociationSet Name="FK_VARIABLE_SE_APLICA_FORMULA" Association="Self.FK_VARIABLE_SE_APLICA_FORMULA">
+      <End Role="VARIABLE" EntitySet="VARIABLE" />
+      <End Role="FORMULAVARIABLE" EntitySet="FORMULAVARIABLE" />
+    </AssociationSet>
+    <AssociationSet Name="FK_LINEA_INVENTARIO_ES_DE_TIPOLINEAINV" Association="Self.FK_LINEA_INVENTARIO_ES_DE_TIPOLINEAINV">
+      <End Role="TIPOLINEAINVENTARIO" EntitySet="TIPOLINEAINVENTARIO" />
+      <End Role="LINEAINVENTARIO" EntitySet="LINEAINVENTARIO" />
+    </AssociationSet>
+    <AssociationSet Name="FK_VARIABLES_SE_APLICA_LINEAINVENTARIO" Association="Self.FK_VARIABLES_SE_APLICA_LINEAINVENTARIO">
+      <End Role="LINEAINVENTARIO" EntitySet="LINEAINVENTARIO" />
+      <End Role="LINEAINVENTARIOVARIABLE" EntitySet="LINEAINVENTARIOVARIABLE" />
+    </AssociationSet>
+    <AssociationSet Name="FK_LINEAINVENTARIO_TIENE_VARIABLES" Association="Self.FK_LINEAINVENTARIO_TIENE_VARIABLES">
+      <End Role="VARIABLE" EntitySet="VARIABLE" />
+      <End Role="LINEAINVENTARIOVARIABLE" EntitySet="LINEAINVENTARIOVARIABLE" />
+    </AssociationSet>
+    <AssociationSet Name="FK_PROYECTO_TIENE_LISTADODECOSTOS" Association="Self.FK_PROYECTO_TIENE_LISTADODECOSTOS">
+      <End Role="PROYECTO" EntitySet="PROYECTO" />
+      <End Role="LISTADODECOSTOS" EntitySet="LISTADODECOSTOS" />
+    </AssociationSet>
+    <AssociationSet Name="FK_PROYECTO_TIENE_LISTADODEESTRATOS" Association="Self.FK_PROYECTO_TIENE_LISTADODEESTRATOS">
+      <End Role="PROYECTO" EntitySet="PROYECTO" />
+      <End Role="LISTADODEESTRATOS" EntitySet="LISTADODEESTRATOS" />
+    </AssociationSet>
+    <AssociationSet Name="FK_LOCALIDAD_ESTA_CONTENIDA_LOCALIDAD" Association="Self.FK_LOCALIDAD_ESTA_CONTENIDA_LOCALIDAD">
+      <End Role="LOCALIDAD" EntitySet="LOCALIDAD" />
+      <End Role="LOCALIDAD1" EntitySet="LOCALIDAD" />
+    </AssociationSet>
+    <AssociationSet Name="FK_PROYECTO_TIENE_OBJETIVOINVENTARIO" Association="Self.FK_PROYECTO_TIENE_OBJETIVOINVENTARIO">
+      <End Role="OBJETIVOINVENTARIO" EntitySet="OBJETIVOINVENTARIO" />
+      <End Role="PROYECTO" EntitySet="PROYECTO" />
+    </AssociationSet>
+    <AssociationSet Name="FK_PROYECTO_TIENE_PARCELAS" Association="Self.FK_PROYECTO_TIENE_PARCELAS">
+      <End Role="PROYECTO" EntitySet="PROYECTO" />
+      <End Role="PARCELA" EntitySet="PARCELA" />
+    </AssociationSet>
+    <AssociationSet Name="FK_USUARIO_CREA_PROYECTO" Association="Self.FK_USUARIO_CREA_PROYECTO">
+      <End Role="USUARIO" EntitySet="USUARIO" />
+      <End Role="PROYECTO" EntitySet="PROYECTO" />
+    </AssociationSet>
+    <AssociationSet Name="DOMINIOVARIABLE" Association="Self.DOMINIOVARIABLE">
+      <End Role="DOMINIO" EntitySet="DOMINIO" />
+      <End Role="VARIABLE" EntitySet="VARIABLE" />
+    </AssociationSet>
+    <AssociationSet Name="FORMULAPROYECTO" Association="Self.FORMULAPROYECTO">
+      <End Role="FORMULA" EntitySet="FORMULA" />
+      <End Role="PROYECTO" EntitySet="PROYECTO" />
+    </AssociationSet>
+    <AssociationSet Name="LINEAINVENTARIOESPECIE" Association="Self.LINEAINVENTARIOESPECIE">
+      <End Role="ESPECIE" EntitySet="ESPECIE" />
+      <End Role="LINEAINVENTARIO" EntitySet="LINEAINVENTARIO" />
+    </AssociationSet>
+    <AssociationSet Name="LISTADODEESPECIES" Association="Self.LISTADODEESPECIES">
+      <End Role="ESPECIE" EntitySet="ESPECIE" />
+      <End Role="PROYECTO" EntitySet="PROYECTO" />
+    </AssociationSet>
+    <AssociationSet Name="LOCALIDADPROYECTO" Association="Self.LOCALIDADPROYECTO">
+      <End Role="LOCALIDAD" EntitySet="LOCALIDAD" />
+      <End Role="PROYECTO" EntitySet="PROYECTO" />
+    </AssociationSet>
+    <AssociationSet Name="TIPOLINEAINVENTARIOPROYECTO" Association="Self.TIPOLINEAINVENTARIOPROYECTO">
+      <End Role="TIPOLINEAINVENTARIO" EntitySet="TIPOLINEAINVENTARIO" />
+      <End Role="PROYECTO" EntitySet="PROYECTO" />
+    </AssociationSet>
+    <AssociationSet Name="TIPOLINEAINVENTARIOVARIABLE" Association="Self.TIPOLINEAINVENTARIOVARIABLE">
+      <End Role="TIPOLINEAINVENTARIO" EntitySet="TIPOLINEAINVENTARIO" />
+      <End Role="VARIABLE" EntitySet="VARIABLE" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

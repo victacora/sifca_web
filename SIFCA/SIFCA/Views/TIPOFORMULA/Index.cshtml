@@ -1,0 +1,50 @@
+﻿@model IEnumerable<SIFCA.Models.TIPOFORMULA>
+
+@{
+    ViewBag.Title = "Gestionar tipo formula";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<a href="@Url.Action("Create", "TIPOFORMULA")" class="btn btn-primary"><i class="fa fa-plus "></i> Crear tipo formula</a>
+<br />
+<br />
+<div class="panel panel-default">
+    <div class="panel-heading">
+        Listado tipo formulas
+    </div>
+    <div class="panel-body">
+        <div class="table-responsive">
+            <table class="table table-striped table-bordered table-hover" id="dataTables">
+                <thead>
+                    <tr>
+                        <th>
+                            Nombre 
+                        </th>
+                        <th>
+                            Descripcion
+                        </th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr class="gradeA">
+                            <td>
+                                @Html.DisplayFor(modelItem => item.NOMBRETIPO)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.DESCRIPCION)
+                            </td>
+
+                            <td><a href="@Url.Action("Edit", "TIPOFORMULA", new { id = item.NROTIPOFORMULA })"><i class="fa fa-edit "></i>Editar</a></td>
+                            <td><a href="@Url.Action("Details", "TIPOFORMULA", new { id = item.NROTIPOFORMULA })"><i class="fa fa-search "></i>Ver detalles</a></td>
+                            <td><a href="@Url.Action("Delete", "TIPOFORMULA", new { id = item.NROTIPOFORMULA })" class="delete-link"><i class="fa fa-pencil"></i>Eliminar</a></td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

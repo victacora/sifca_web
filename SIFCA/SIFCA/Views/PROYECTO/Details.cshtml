@@ -1,0 +1,211 @@
+﻿@model SIFCA.Models.PROYECTO
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>PROYECTO</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.FECHA)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.FECHA)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.NOMBRE)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.NOMBRE)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DESCRIPCION)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DESCRIPCION)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.PRESUPUESTO)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PRESUPUESTO)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.PLAZO)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PLAZO)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.TIPOPLAZO)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TIPOPLAZO)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.TIPOPROYECTO)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TIPOPROYECTO)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.NUMEROPERSONAS)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.NUMEROPERSONAS)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.TIPODISENIOMUESTRAL)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TIPODISENIOMUESTRAL)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.SELECCIONALEATORIA)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.SELECCIONALEATORIA)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CONFIANZA)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CONFIANZA)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.NUMEROPARCELAS)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.NUMEROPARCELAS)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.NUMEROPARCELASAMUESTREAR)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.NUMEROPARCELASAMUESTREAR)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.TAMANIOPARCELA)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TAMANIOPARCELA)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.AREATOTAL)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.AREATOTAL)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.INTMUESTREO)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.INTMUESTREO)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.AREAMUESTREAR)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.AREAMUESTREAR)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.LIMITINFDAP)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.LIMITINFDAP)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.AREAREGENERACION)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.AREAREGENERACION)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.FACTORDEFORMA)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.FACTORDEFORMA)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ETAPA)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ETAPA)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CONFIGURACIONMAPA)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CONFIGURACIONMAPA)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.OBJETIVOINVENTARIO.DESCRIPOBJETINV)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.OBJETIVOINVENTARIO.DESCRIPOBJETINV)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.USUARIO.NOMBRES)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.USUARIO.NOMBRES)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.NROPROY }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

@@ -1,0 +1,63 @@
+﻿@model SIFCA.Models.VARIABLE
+
+@{
+    ViewBag.Title = "Detailles variable";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <h4>Detalles variable</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.NROVARIABLE)
+        <div class="form-group">
+            @Html.LabelFor(model => model.ABREVIATURA, "Abreviatura (Max. 10 caracteres)", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.ABREVIATURA, new { htmlAttributes = new { @class = "form-control", @disabled = "disabled" } })
+                @Html.ValidationMessageFor(model => model.ABREVIATURA, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.NOMBRE, "Nombre variable", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.NOMBRE, new { htmlAttributes = new { @class = "form-control", @disabled = "disabled" } })
+                @Html.ValidationMessageFor(model => model.NOMBRE, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.DESCRIPCION, "Descripcion", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextAreaFor(model => model.DESCRIPCION, 5, 116, new { @class = "form-control" ,@readonly=true})
+                @Html.ValidationMessageFor(model => model.DESCRIPCION, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.VARIABLEDESCRIPTIVA, "Variable descriptiva ó numerica", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("VARIABLEDESCRIPTIVA", null, htmlAttributes: new { @class = "form-control", @disabled = "disabled" })
+                @Html.ValidationMessageFor(model => model.VARIABLEDESCRIPTIVA, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.TIPODOMINIO, "Tipo dominio", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("TIPODOMINIO", null, htmlAttributes: new { @class = "form-control", @disabled = "disabled" })
+                @Html.ValidationMessageFor(model => model.TIPODOMINIO, "", new { @class = "text-danger" })
+            </div>
+        </div>
+    </div>
+}
+<div>
+    <hr />
+    <a href="@Url.Action("Index", "VARIABLE")" class="btn btn-primary"><i class="fa fa-arrow-left "></i> Regresar</a>
+    <a href="@Url.Action("Edit", "VARIABLE", new { id = Model.NROVARIABLE })" class="btn btn-primary"><i class="fa fa-edit "></i> Editar variable</a>
+</div>
+<p>
+
+</p>

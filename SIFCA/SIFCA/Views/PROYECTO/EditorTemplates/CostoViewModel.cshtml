@@ -1,0 +1,15 @@
+﻿@model SIFCA.Models.CostoViewModel
+
+<tr class="gradeA">
+    <td>
+        @Html.DisplayFor(model => model.Nombre)
+        @Html.HiddenFor(model => model.Nombre)
+    </td>
+    <td>
+        @Html.EditorFor(model => model.Valor)
+    </td>
+    <td>
+        @Html.HiddenFor(model => model.codCosto)
+        @Html.CheckBoxFor(model => model.Seleccionar)
+    </td>
+</tr>

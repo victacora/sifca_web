@@ -1,0 +1,61 @@
+﻿@model IEnumerable<SIFCA.Models.FORMULA>
+
+@{
+    ViewBag.Title = "Gestionar formulas";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<a href="@Url.Action("Create", "FORMULA")" class="btn btn-primary"><i class="fa fa-plus "></i> Crear formula</a>
+<br />
+<br />
+<div class="panel panel-default">
+    <div class="panel-heading">
+        Listado formulas
+    </div>
+    <div class="panel-body">
+        <div class="table-responsive">
+            <table class="table table-striped table-bordered table-hover" id="dataTables">
+                <thead>
+                    <tr>
+                        <th>
+                            Nombre
+                        </th>
+                        <th>
+                            Expresion
+                        </th>
+                        <th>
+                            Descripcion
+                        </th>
+                        <th>
+                            Nombre tipo formula
+                        </th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr class="gradeA">
+                            <td>
+                                @Html.DisplayFor(modelItem => item.NOMBRE)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.EXPRESION)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.DESCRIPCION)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.TIPOFORMULA.NOMBRETIPO)
+                            </td>
+                            <td><a href="@Url.Action("Edit", "FORMULA", new { id = item.NROFORMULA })"><i class="fa fa-edit "></i>Editar</a></td>
+                            <td><a href="@Url.Action("Details", "FORMULA", new { id = item.NROFORMULA })"><i class="fa fa-search "></i>Ver detalles</a></td>
+                            <td><a href="@Url.Action("Delete", "FORMULA", new { id = item.NROFORMULA })" class="delete-link"><i class="fa fa-pencil"></i>Eliminar</a></td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

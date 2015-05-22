@@ -1,0 +1,41 @@
+﻿@model SIFCA.Models.ESTRATO
+
+@{
+    ViewBag.Title = "Detalles estrato";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <h4>Destalles estrato</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.CODEST)
+        <div class="form-group">
+            @Html.LabelFor(model => model.CODEST, "Codigo estrato", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.CODEST, new { htmlAttributes = new { @class = "form-control", @disabled = "disabled" } })
+                @Html.ValidationMessageFor(model => model.CODEST, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.DESCRIPESTRATO, "Descripcion estrato", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextAreaFor(model => model.DESCRIPESTRATO, 5, 116, new { @class = "form-control", @readonly = true })
+                @Html.ValidationMessageFor(model => model.DESCRIPESTRATO, "", new { @class = "text-danger" })
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    <hr />
+    <a href="@Url.Action("Index", "ESTRATO")" class="btn btn-primary"><i class="fa fa-arrow-left "></i> Regresar</a>
+    <a href="@Url.Action("Edit", "ESTRATO", new { id = Model.CODEST })" class="btn btn-primary"><i class="fa fa-edit "></i> Editar estrato</a>
+</div>
+<p>
+
+</p>

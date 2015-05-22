@@ -1,0 +1,18 @@
+﻿@model SIFCA.Models.EstratoViewModel
+
+<tr class="gradeA">
+    <td>
+        @Html.HiddenFor(model => model.Nombre)
+        @Html.DisplayFor(model => model.Nombre)
+    </td>
+    <td>
+        @Html.EditorFor(model => model.Peso)
+    </td>
+    <td>
+        @Html.EditorFor(model => model.TamanioMuestra)
+    </td>
+    <td>
+        @Html.HiddenFor(model => model.codEstrato)
+        @Html.CheckBoxFor(model => model.Seleccionar)
+    </td>
+</tr>

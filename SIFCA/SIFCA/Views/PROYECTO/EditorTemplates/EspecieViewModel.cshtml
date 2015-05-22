@@ -1,0 +1,20 @@
+﻿@model SIFCA.Models.EspecieViewModel
+
+<tr class="gradeA">
+    <td>
+        @Html.DisplayFor(model => model.Familia)
+        @Html.HiddenFor(model => model.Familia)
+    </td>
+    <td>
+        @Html.DisplayFor(model => model.NombreCientifico)
+        @Html.HiddenFor(model => model.NombreCientifico)
+    </td>
+    <td>
+        @Html.DisplayFor(model => model.NombreComun)
+        @Html.HiddenFor(model => model.NombreComun)
+    </td>
+    <td>
+        @Html.HiddenFor(model => model.codEspecie)
+        @Html.CheckBoxFor(model => model.Seleccionar)
+    </td>
+</tr>
