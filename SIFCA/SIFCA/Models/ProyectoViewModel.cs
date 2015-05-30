@@ -14,6 +14,7 @@ namespace SIFCA.Models
         public List<FormulaViewModel> Formulas { get; set; }
         public List<CostoViewModel> Costos { get; set; }
         public List<LocalidadViewModel> Localidades { get; set; }
+        public List<TipoLineaInventarioViewModel> TipoLineaInventario { get; set; }
 
         public ProyectoViewModel()
         {
@@ -23,6 +24,7 @@ namespace SIFCA.Models
             Formulas = new List<FormulaViewModel>();
             Costos = new List<CostoViewModel>();
             Localidades = new List<LocalidadViewModel>();
+            TipoLineaInventario = new List<TipoLineaInventarioViewModel>();
         }
     }
 }

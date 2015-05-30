@@ -1,0 +1,12 @@
+﻿@model SIFCA.Models.TipoLineaInventarioViewModel
+
+<tr class="gradeA">
+    <td>
+        @Html.DisplayFor(model => model.Nombre)
+        @Html.HiddenFor(model => model.Nombre)
+    </td>
+    <td>
+        @Html.HiddenFor(model => model.codTipoLineaInventario)
+        @Html.CheckBoxFor(model => model.Seleccionar)
+    </td>
+</tr>

@@ -184,6 +184,7 @@
     <Compile Include="Controllers\OBJETIVOINVENTARIOController.cs" />
     <Compile Include="Controllers\PROYECTOController.cs" />
     <Compile Include="Controllers\TIPOFORMULAController.cs" />
+    <Compile Include="Controllers\TIPOLINEAINVENTARIOController.cs" />
     <Compile Include="Controllers\USUARIOController.cs" />
     <Compile Include="Controllers\VARIABLEController.cs" />
     <Compile Include="Global.asax.cs">
@@ -261,6 +262,7 @@
     <Compile Include="Models\PROYECTO.cs">
       <DependentUpon>SIFCAModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\TipoLineaInventarioViewModel.cs" />
     <Compile Include="Models\ProyectoViewModel.cs" />
     <Compile Include="Models\SIFCAModel.Context.cs">
       <AutoGen>True</AutoGen>
@@ -1217,6 +1219,21 @@
     <Content Include="Views\PROYECTO\EditorTemplates\FormulaViewModel.cshtml" />
     <Content Include="Views\PROYECTO\EditorTemplates\LocalidadViewModel.cshtml" />
     <Content Include="Views\PROYECTO\Create.cshtml" />
+    <Content Include="Web_Conexion_myAspNet.config">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Web_Conexion_myAspNet.Debug.config">
+      <DependentUpon>Web_Conexion_myAspNet.config</DependentUpon>
+    </Content>
+    <Content Include="Web_Conexion_myAspNet.Release.config">
+      <DependentUpon>Web_Conexion_myAspNet.config</DependentUpon>
+    </Content>
+    <Content Include="Views\PROYECTO\EditorTemplates\TipoLinaInventarioViewModel.cshtml" />
+    <Content Include="Views\TIPOLINEAINVENTARIO\Create.cshtml" />
+    <Content Include="Views\TIPOLINEAINVENTARIO\Delete.cshtml" />
+    <Content Include="Views\TIPOLINEAINVENTARIO\Details.cshtml" />
+    <Content Include="Views\TIPOLINEAINVENTARIO\Edit.cshtml" />
+    <Content Include="Views\TIPOLINEAINVENTARIO\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
