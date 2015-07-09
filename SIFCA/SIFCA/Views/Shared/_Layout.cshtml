@@ -46,6 +46,9 @@
                                 <a class="@(ViewBag.MenuActivo == "Localidad" ? "active-menu" : "")" href="@Url.Action("Index", "LOCALIDAD")">Localidad</a>
                             </li>
                             <li>
+                                <a class="@(ViewBag.MenuActivo == "Costos" ? "active-menu" : "")" href="@Url.Action("Index", "COSTOS")">Costos</a>
+                            </li>
+                            <li>
                                 <a class="@(ViewBag.MenuActivo == "ObjetivoInventario" ? "active-menu" : "")" href="@Url.Action("Index", "OBJETIVOINVENTARIO")">Objetivo inventario</a>
                             </li>
                             <li>
@@ -56,6 +59,9 @@
                             </li>
                             <li>
                                 <a class="@(ViewBag.MenuActivo == "TipoFormula" ? "active-menu" : "")" href="@Url.Action("Index", "TIPOFORMULA")">Tipo formulas</a>
+                            </li>
+                            <li>
+                                <a class="@(ViewBag.MenuActivo == "TipoLineaInventario" ? "active-menu" : "")" href="@Url.Action("Index", "TIPOLINEAINVENTARIO")">Tipo linea inventario</a>
                             </li>
                             <li>
                                 <a class="@(ViewBag.MenuActivo == "Variable" ? "active-menu" : "")" href="@Url.Action("Index", "VARIABLE")">Variables</a>
