@@ -42,7 +42,7 @@
                                 @Html.DisplayFor(modelItem => item.DESCRIPCION)
                             </td>
                             <td>
-                                @Html.DisplayFor(modelItem => item.REQUIEREESPECIE=="S" ? "Si" : "No")
+                                @(item.REQUIEREESPECIE=="S" ? "Si" : "No")
                             </td>
                             <td><a href="@Url.Action("Edit", "TIPOLINEAINVENTARIO", new { id = item.NROTIPOLINEAINV })"><i class="fa fa-edit "></i>Editar</a></td>
                             <td><a href="@Url.Action("Details", "TIPOLINEAINVENTARIO", new { id = item.NROTIPOLINEAINV })"><i class="fa fa-search "></i>Ver detalles</a></td>

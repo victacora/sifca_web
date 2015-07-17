@@ -28,23 +28,6 @@ namespace SIFCA.Controllers
         public ActionResult Details(Guid? id)
         {
             ViewBag.MenuActivo = "Proyecto";
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            PROYECTO pROYECTO = db.PROYECTO.Find(id);
-            if (pROYECTO == null)
-            {
-                return HttpNotFound();
-            }
-            return View(pROYECTO);
-        }
-
-        // GET: PROYECTO/Create
-       
-        public ActionResult Create()
-        {
-            ViewBag.MenuActivo = "Proyecto";
 
             ViewBag.Proyecto_NOMBRETIPOINV = new SelectList(db.OBJETIVOINVENTARIO, "NOMBRETIPOINV", "DESCRIPOBJETINV");
             List<KeyValuePair<string, string>> seleccionarSiNo = new List<KeyValuePair<string, string>>();
@@ -65,15 +48,64 @@ namespace SIFCA.Controllers
             tipoDisenioMuetral.Add(new KeyValuePair<string, string>("E", "Estratificado"));
             tipoDisenioMuetral.Add(new KeyValuePair<string, string>("B", "Bietapico"));
             ViewBag.tipoDisenioMuetral = new SelectList(tipoDisenioMuetral, "Key", "Value");
- 
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
             ProyectoViewModel pVW = new ProyectoViewModel();
-            pVW.Proyecto.FECHA = DateTime.Now;
-            pVW.Especies = db.ESPECIE.Select(e => new EspecieViewModel() { codEspecie = e.CODESP,Familia=e.FAMILIA, NombreCientifico = e.NOMCIENTIFICO, NombreComun = e.NOMCOMUN, Seleccionar = false }).ToList();
-            pVW.Estratos = db.ESTRATO.Select(e => new EstratoViewModel() { codEstrato = e.CODEST, Nombre = e.DESCRIPESTRATO,TamanioMuestra=0,Peso=0, Seleccionar = false }).ToList();
-            pVW.Formulas = db.FORMULA.Select(e => new FormulaViewModel() { codFormula = e.NROFORMULA, Nombre = e.NOMBRE, Seleccionar = false }).ToList();
-            pVW.Localidades = db.LOCALIDAD.Select(e => new LocalidadViewModel() { codLocalidad = e.CODLOCALIDAD, Nombre = e.NOMBRE, Seleccionar = false }).ToList();
-            pVW.Costos = db.COSTO.Select(e => new CostoViewModel() { codCosto = e.NROCOSTO, Nombre = e.NOMBRE,Valor=0, Seleccionar = false }).ToList();
+            PROYECTO proyecto = db.PROYECTO.Find(id);
+            if (proyecto == null)
+            {
+                return HttpNotFound();
+            }
+            else
+            {              
+                pVW.Proyecto = proyecto;
+                pVW.Especies = proyecto.ESPECIE.Select(e => new EspecieViewModel() { codEspecie = e.CODESP, Familia = e.FAMILIA, NombreCientifico = e.NOMCIENTIFICO, NombreComun = e.NOMCOMUN, Seleccionar = false }).ToList();
+                pVW.Estratos = proyecto.LISTADODEESTRATOS.Select(e => new EstratoViewModel() { codEstrato = e.CODEST, Nombre = e.ESTRATO.DESCRIPESTRATO, TamanioMuestra = 0, Peso = 0, Seleccionar = false }).ToList();
+                pVW.Formulas = proyecto.FORMULA.Select(e => new FormulaViewModel() { codFormula = e.NROFORMULA, Nombre = e.NOMBRE, Seleccionar = false }).ToList();
+                pVW.Localidades = proyecto.LOCALIDAD.Select(e => new LocalidadViewModel() { codLocalidad = e.CODLOCALIDAD, Nombre = e.NOMBRE, Seleccionar = false }).ToList();
+                pVW.TipoLineaInventario = proyecto.TIPOLINEAINVENTARIO.Select(e => new TipoLineaInventarioViewModel() { codTipoLineaInventario = e.NROTIPOLINEAINV, Nombre = e.NOMBRE, Seleccionar = false }).ToList();
+                pVW.Costos = proyecto.LISTADODECOSTOS.Select(e => new CostoViewModel() { codCosto = e.NROCOSTO, Nombre = e.COSTO.NOMBRE, Valor = 0, Seleccionar = false }).ToList();
+            }
             return View(pVW);
+    }
+
+    // GET: PROYECTO/Create
+       
+    public ActionResult Create()
+    {
+        ViewBag.MenuActivo = "Proyecto";
+
+        ViewBag.Proyecto_NOMBRETIPOINV = new SelectList(db.OBJETIVOINVENTARIO, "NOMBRETIPOINV", "DESCRIPOBJETINV");
+        List<KeyValuePair<string, string>> seleccionarSiNo = new List<KeyValuePair<string, string>>();
+        seleccionarSiNo.Add(new KeyValuePair<string, string>("S", "Si"));
+        seleccionarSiNo.Add(new KeyValuePair<string, string>("N", "No"));
+        ViewBag.seleccionarSiNo = new SelectList(seleccionarSiNo, "Key", "Value");
+
+        List<KeyValuePair<string, string>> tipoPlazo = new List<KeyValuePair<string, string>>();
+        tipoPlazo.Add(new KeyValuePair<string, string>("H", "Horas"));
+        tipoPlazo.Add(new KeyValuePair<string, string>("D", "Dias"));
+        tipoPlazo.Add(new KeyValuePair<string, string>("S", "Semanas"));
+        tipoPlazo.Add(new KeyValuePair<string, string>("M", "Meses"));
+        tipoPlazo.Add(new KeyValuePair<string, string>("A", "Años"));
+        ViewBag.tipoPlazo = new SelectList(tipoPlazo, "Key", "Value");
+
+        List<KeyValuePair<string, string>> tipoDisenioMuetral = new List<KeyValuePair<string, string>>();
+        tipoDisenioMuetral.Add(new KeyValuePair<string, string>("S", "Simple"));
+        tipoDisenioMuetral.Add(new KeyValuePair<string, string>("E", "Estratificado"));
+        tipoDisenioMuetral.Add(new KeyValuePair<string, string>("B", "Bietapico"));
+        ViewBag.tipoDisenioMuetral = new SelectList(tipoDisenioMuetral, "Key", "Value");
+ 
+        ProyectoViewModel pVW = new ProyectoViewModel();
+        pVW.Proyecto.FECHA = DateTime.Now;
+        pVW.Especies = db.ESPECIE.Select(e => new EspecieViewModel() { codEspecie = e.CODESP,Familia=e.FAMILIA, NombreCientifico = e.NOMCIENTIFICO, NombreComun = e.NOMCOMUN, Seleccionar = false }).ToList();
+        pVW.Estratos = db.ESTRATO.Select(e => new EstratoViewModel() { codEstrato = e.CODEST, Nombre = e.DESCRIPESTRATO,TamanioMuestra=0,Peso=0, Seleccionar = false }).ToList();
+        pVW.Formulas = db.FORMULA.Select(e => new FormulaViewModel() { codFormula = e.NROFORMULA, Nombre = e.NOMBRE, Seleccionar = false }).ToList();
+        pVW.Localidades = db.LOCALIDAD.Select(e => new LocalidadViewModel() { codLocalidad = e.CODLOCALIDAD, Nombre = e.NOMBRE, Seleccionar = false }).ToList();
+        pVW.TipoLineaInventario = db.TIPOLINEAINVENTARIO.Select(e => new TipoLineaInventarioViewModel() { codTipoLineaInventario = e.NROTIPOLINEAINV, Nombre = e.NOMBRE, Seleccionar = false }).ToList();
+        pVW.Costos = db.COSTO.Select(e => new CostoViewModel() { codCosto = e.NROCOSTO, Nombre = e.NOMBRE,Valor=0, Seleccionar = false }).ToList();
+        return View(pVW);
         }
 
         // POST: PROYECTO/Create
@@ -86,12 +118,12 @@ namespace SIFCA.Controllers
             ViewBag.MenuActivo = "Proyecto";
             pVW.Proyecto.NROPROY = Guid.NewGuid();
             pVW.Proyecto.USUARIO = (USUARIO)Session["USUARIO"];
-           /* if (ModelState.IsValid)
+            if (ModelState.IsValid)
             {
-                db.PROYECTO.Add(proyecto.Proyecto);
+                db.PROYECTO.Add(pVW.Proyecto);
                 db.SaveChanges();
                 return RedirectToAction("Index");
-            }*/
+            }
             
             ViewBag.Proyecto_NOMBRETIPOINV = new SelectList(db.OBJETIVOINVENTARIO, "NOMBRETIPOINV", "DESCRIPOBJETINV");
  
@@ -122,15 +154,6 @@ namespace SIFCA.Controllers
         public ActionResult Edit(Guid? id)
         {
             ViewBag.MenuActivo = "Proyecto";
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            PROYECTO pROYECTO = db.PROYECTO.Find(id);
-            if (pROYECTO == null)
-            {
-                return HttpNotFound();
-            }
 
             ViewBag.Proyecto_NOMBRETIPOINV = new SelectList(db.OBJETIVOINVENTARIO, "NOMBRETIPOINV", "DESCRIPOBJETINV");
             List<KeyValuePair<string, string>> seleccionarSiNo = new List<KeyValuePair<string, string>>();
@@ -151,8 +174,27 @@ namespace SIFCA.Controllers
             tipoDisenioMuetral.Add(new KeyValuePair<string, string>("E", "Estratificado"));
             tipoDisenioMuetral.Add(new KeyValuePair<string, string>("B", "Bietapico"));
             ViewBag.tipoDisenioMuetral = new SelectList(tipoDisenioMuetral, "Key", "Value");
- 
-            return View(pROYECTO);
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            ProyectoViewModel pVW = new ProyectoViewModel();
+            PROYECTO proyecto = db.PROYECTO.Find(id);
+            if (proyecto == null)
+            {
+                return HttpNotFound();
+            }
+            else
+            {
+                pVW.Proyecto = proyecto;
+                pVW.Especies = proyecto.ESPECIE.Select(e => new EspecieViewModel() { codEspecie = e.CODESP, Familia = e.FAMILIA, NombreCientifico = e.NOMCIENTIFICO, NombreComun = e.NOMCOMUN, Seleccionar = false }).ToList();
+                pVW.Estratos = proyecto.LISTADODEESTRATOS.Select(e => new EstratoViewModel() { codEstrato = e.CODEST, Nombre = e.ESTRATO.DESCRIPESTRATO, TamanioMuestra = 0, Peso = 0, Seleccionar = false }).ToList();
+                pVW.Formulas = proyecto.FORMULA.Select(e => new FormulaViewModel() { codFormula = e.NROFORMULA, Nombre = e.NOMBRE, Seleccionar = false }).ToList();
+                pVW.Localidades = proyecto.LOCALIDAD.Select(e => new LocalidadViewModel() { codLocalidad = e.CODLOCALIDAD, Nombre = e.NOMBRE, Seleccionar = false }).ToList();
+                pVW.TipoLineaInventario = proyecto.TIPOLINEAINVENTARIO.Select(e => new TipoLineaInventarioViewModel() { codTipoLineaInventario = e.NROTIPOLINEAINV, Nombre = e.NOMBRE, Seleccionar = false }).ToList();
+                pVW.Costos = proyecto.LISTADODECOSTOS.Select(e => new CostoViewModel() { codCosto = e.NROCOSTO, Nombre = e.COSTO.NOMBRE, Valor = 0, Seleccionar = false }).ToList();
+            }
+            return View(pVW);
         }
 
         // POST: PROYECTO/Edit/5
