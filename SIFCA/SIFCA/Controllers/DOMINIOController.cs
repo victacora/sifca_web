@@ -43,6 +43,7 @@ namespace SIFCA.Controllers
        
         public ActionResult Create()
         {
+            ViewBag.MenuActivo = "Dominio";
             return View();
         }
 

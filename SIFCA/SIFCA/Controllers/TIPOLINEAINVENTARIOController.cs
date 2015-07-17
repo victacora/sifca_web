@@ -17,16 +17,23 @@ namespace SIFCA.Controllers
         // GET: TIPOLINEAINVENTARIO
         public ActionResult Index()
         {
+            ViewBag.MenuActivo = "TipoLineaInventario";
             return View(db.TIPOLINEAINVENTARIO.ToList());
         }
 
         // GET: TIPOLINEAINVENTARIO/Details/5
         public ActionResult Details(Guid? id)
         {
+            ViewBag.MenuActivo = "TipoLineaInventario";
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
+            List<KeyValuePair<string, string>> siNo = new List<KeyValuePair<string, string>>();
+            siNo.Add(new KeyValuePair<string, string>("S", "Si"));
+            siNo.Add(new KeyValuePair<string, string>("N", "No"));
+            ViewBag.REQUIEREESPECIE = new SelectList(siNo, "Key", "Value");
+            
             TIPOLINEAINVENTARIO tIPOLINEAINVENTARIO = db.TIPOLINEAINVENTARIO.Find(id);
             if (tIPOLINEAINVENTARIO == null)
             {
@@ -38,6 +45,12 @@ namespace SIFCA.Controllers
         // GET: TIPOLINEAINVENTARIO/Create
         public ActionResult Create()
         {
+            ViewBag.MenuActivo = "TipoLineaInventario";
+            List<KeyValuePair<string, string>> siNo = new List<KeyValuePair<string, string>>();
+            siNo.Add(new KeyValuePair<string, string>("S", "Si"));
+            siNo.Add(new KeyValuePair<string, string>("N", "No"));
+            ViewBag.REQUIEREESPECIE = new SelectList(siNo, "Key", "Value");
+            
             return View();
         }
 
@@ -48,6 +61,12 @@ namespace SIFCA.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "NROTIPOLINEAINV,NOMBRE,DESCRIPCION,REQUIEREESPECIE")] TIPOLINEAINVENTARIO tIPOLINEAINVENTARIO)
         {
+            ViewBag.MenuActivo = "TipoLineaInventario";
+            List<KeyValuePair<string, string>> siNo = new List<KeyValuePair<string, string>>();
+            siNo.Add(new KeyValuePair<string, string>("S", "Si"));
+            siNo.Add(new KeyValuePair<string, string>("N", "No"));
+            ViewBag.REQUIEREESPECIE = new SelectList(siNo, "Key", "Value");
+            
             if (ModelState.IsValid)
             {
                 tIPOLINEAINVENTARIO.NROTIPOLINEAINV = Guid.NewGuid();
@@ -62,6 +81,12 @@ namespace SIFCA.Controllers
         // GET: TIPOLINEAINVENTARIO/Edit/5
         public ActionResult Edit(Guid? id)
         {
+            ViewBag.MenuActivo = "TipoLineaInventario";
+            List<KeyValuePair<string, string>> siNo = new List<KeyValuePair<string, string>>();
+            siNo.Add(new KeyValuePair<string, string>("S", "Si"));
+            siNo.Add(new KeyValuePair<string, string>("N", "No"));
+            ViewBag.REQUIEREESPECIE = new SelectList(siNo, "Key", "Value");
+            
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -81,6 +106,12 @@ namespace SIFCA.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "NROTIPOLINEAINV,NOMBRE,DESCRIPCION,REQUIEREESPECIE")] TIPOLINEAINVENTARIO tIPOLINEAINVENTARIO)
         {
+            ViewBag.MenuActivo = "TipoLineaInventario";
+            List<KeyValuePair<string, string>> siNo = new List<KeyValuePair<string, string>>();
+            siNo.Add(new KeyValuePair<string, string>("S", "Si"));
+            siNo.Add(new KeyValuePair<string, string>("N", "No"));
+            ViewBag.REQUIEREESPECIE = new SelectList(siNo, "Key", "Value");
+            
             if (ModelState.IsValid)
             {
                 db.Entry(tIPOLINEAINVENTARIO).State = System.Data.Entity.EntityState.Modified;
@@ -90,15 +121,23 @@ namespace SIFCA.Controllers
             return View(tIPOLINEAINVENTARIO);
         }
 
-        // POST: TIPOLINEAINVENTARIO/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(Guid id)
+        // POST: USUARIO/Delete/5
+        [HttpPost]
+
+        public ActionResult Delete(Guid id)
         {
-            TIPOLINEAINVENTARIO tIPOLINEAINVENTARIO = db.TIPOLINEAINVENTARIO.Find(id);
-            db.TIPOLINEAINVENTARIO.Remove(tIPOLINEAINVENTARIO);
-            db.SaveChanges();
-            return RedirectToAction("Index");
+            try
+            {
+                ViewBag.MenuActivo = "TipoLineaInventario";
+                TIPOLINEAINVENTARIO tIPOLINEAINVENTARIO = db.TIPOLINEAINVENTARIO.Find(id);
+                db.TIPOLINEAINVENTARIO.Remove(tIPOLINEAINVENTARIO);
+                db.SaveChanges();
+                return Content(Boolean.TrueString);
+            }
+            catch
+            {//TODO: Log error				
+                return Content(Boolean.FalseString);
+            }
         }
 
         protected override void Dispose(bool disposing)

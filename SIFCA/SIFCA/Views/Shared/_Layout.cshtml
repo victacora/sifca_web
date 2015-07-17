@@ -35,7 +35,7 @@
                     </li>
                     <li>
                         <a href="#"><i class="fa fa-cogs fa-3x"></i> Configuración<span class="fa arrow"></span></a>
-                        <ul class="@((ViewBag.MenuActivo == "TipoFormula" || ViewBag.MenuActivo == "Formula" || ViewBag.MenuActivo == "Especie" || ViewBag.MenuActivo == "GrupoComercial" || ViewBag.MenuActivo == "Localidad" || ViewBag.MenuActivo == "ObjetivoInventario" || ViewBag.MenuActivo == "Estrato" || ViewBag.MenuActivo == "Variable" || ViewBag.MenuActivo == "Dominio") ? "nav nav-second-level collapse in" : "nav nav-second-level collapse")">
+                        <ul class="@((ViewBag.MenuActivo == "TipoFormula" || ViewBag.MenuActivo == "Formula" || ViewBag.MenuActivo == "Especie" || ViewBag.MenuActivo == "GrupoComercial" || ViewBag.MenuActivo == "Localidad" || ViewBag.MenuActivo == "ObjetivoInventario" || ViewBag.MenuActivo == "Estrato" || ViewBag.MenuActivo == "Variable" || ViewBag.MenuActivo == "Dominio" || ViewBag.MenuActivo == "TipoLineaInventario" || ViewBag.MenuActivo == "Costos") ? "nav nav-second-level collapse in" : "nav nav-second-level collapse")">
                             <li>
                                 <a class="@(ViewBag.MenuActivo == "Especie" ? "active-menu" : "")" href="@Url.Action("Index", "ESPECIE")">Especies</a>
                             </li>

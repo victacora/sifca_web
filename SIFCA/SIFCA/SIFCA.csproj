@@ -1230,7 +1230,6 @@
     </Content>
     <Content Include="Views\PROYECTO\EditorTemplates\TipoLinaInventarioViewModel.cshtml" />
     <Content Include="Views\TIPOLINEAINVENTARIO\Create.cshtml" />
-    <Content Include="Views\TIPOLINEAINVENTARIO\Delete.cshtml" />
     <Content Include="Views\TIPOLINEAINVENTARIO\Details.cshtml" />
     <Content Include="Views\TIPOLINEAINVENTARIO\Edit.cshtml" />
     <Content Include="Views\TIPOLINEAINVENTARIO\Index.cshtml" />
