@@ -29,7 +29,7 @@ namespace SIFCA.Controllers
         {
             ViewBag.MenuActivo = "Proyecto";
 
-            ViewBag.Proyecto_NOMBRETIPOINV = new SelectList(db.OBJETIVOINVENTARIO, "NOMBRETIPOINV", "DESCRIPOBJETINV");
+            ViewBag.tipoInventario = new SelectList(db.OBJETIVOINVENTARIO, "NOMBRETIPOINV", "DESCRIPOBJETINV");
             List<KeyValuePair<string, string>> seleccionarSiNo = new List<KeyValuePair<string, string>>();
             seleccionarSiNo.Add(new KeyValuePair<string, string>("S", "Si"));
             seleccionarSiNo.Add(new KeyValuePair<string, string>("N", "No"));
@@ -48,6 +48,13 @@ namespace SIFCA.Controllers
             tipoDisenioMuetral.Add(new KeyValuePair<string, string>("E", "Estratificado"));
             tipoDisenioMuetral.Add(new KeyValuePair<string, string>("B", "Bietapico"));
             ViewBag.tipoDisenioMuetral = new SelectList(tipoDisenioMuetral, "Key", "Value");
+
+            List<KeyValuePair<string, string>> tipoProyecto = new List<KeyValuePair<string, string>>();
+            tipoProyecto.Add(new KeyValuePair<string, string>("IN", "Independiente"));
+            tipoProyecto.Add(new KeyValuePair<string, string>("CO", "Contenido"));
+            tipoProyecto.Add(new KeyValuePair<string, string>("CR", "Contenedor"));
+            ViewBag.tipoProyecto = new SelectList(tipoProyecto, "Key", "Value");
+
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -77,7 +84,7 @@ namespace SIFCA.Controllers
     {
         ViewBag.MenuActivo = "Proyecto";
 
-        ViewBag.Proyecto_NOMBRETIPOINV = new SelectList(db.OBJETIVOINVENTARIO, "NOMBRETIPOINV", "DESCRIPOBJETINV");
+        ViewBag.tipoInventario = new SelectList(db.OBJETIVOINVENTARIO, "NOMBRETIPOINV", "DESCRIPOBJETINV");
         List<KeyValuePair<string, string>> seleccionarSiNo = new List<KeyValuePair<string, string>>();
         seleccionarSiNo.Add(new KeyValuePair<string, string>("S", "Si"));
         seleccionarSiNo.Add(new KeyValuePair<string, string>("N", "No"));
@@ -96,7 +103,13 @@ namespace SIFCA.Controllers
         tipoDisenioMuetral.Add(new KeyValuePair<string, string>("E", "Estratificado"));
         tipoDisenioMuetral.Add(new KeyValuePair<string, string>("B", "Bietapico"));
         ViewBag.tipoDisenioMuetral = new SelectList(tipoDisenioMuetral, "Key", "Value");
- 
+
+        List<KeyValuePair<string, string>> tipoProyecto = new List<KeyValuePair<string, string>>();
+        tipoProyecto.Add(new KeyValuePair<string, string>("IN", "Independiente"));
+        tipoProyecto.Add(new KeyValuePair<string, string>("CO", "Contenido"));
+        tipoProyecto.Add(new KeyValuePair<string, string>("CR", "Contenedor"));
+        ViewBag.tipoProyecto = new SelectList(tipoProyecto, "Key", "Value");
+
         ProyectoViewModel pVW = new ProyectoViewModel();
         pVW.Proyecto.FECHA = DateTime.Now;
         pVW.Especies = db.ESPECIE.Select(e => new EspecieViewModel() { codEspecie = e.CODESP,Familia=e.FAMILIA, NombreCientifico = e.NOMCIENTIFICO, NombreComun = e.NOMCOMUN, Seleccionar = false }).ToList();
@@ -120,12 +133,25 @@ namespace SIFCA.Controllers
             pVW.Proyecto.USUARIO = (USUARIO)Session["USUARIO"];
             if (ModelState.IsValid)
             {
+                pVW.Proyecto.LISTADODECOSTOS = pVW.Costos.Where(c => c.Seleccionar).Select(c => new LISTADODECOSTOS() { NROCOSTO = c.codCosto, VALOR = c.Valor }).ToList<LISTADODECOSTOS>();
+                pVW.Proyecto.LISTADODEESTRATOS = pVW.Estratos.Where(e => e.Seleccionar).Select(e => new LISTADODEESTRATOS() { CODEST = e.codEstrato, NROPROY = pVW.Proyecto.NROPROY, PESO = e.Peso }).ToList<LISTADODEESTRATOS>();
+
+                List<Guid> tipoLineaInvSeleccionadas = pVW.TipoLineaInventario.Where(tVW => tVW.Seleccionar).Select(tVW => tVW.codTipoLineaInventario).ToList<Guid>();
+                pVW.Proyecto.TIPOLINEAINVENTARIO = db.TIPOLINEAINVENTARIO.Where(t => tipoLineaInvSeleccionadas.Contains(t.NROTIPOLINEAINV)).ToList<TIPOLINEAINVENTARIO>();
+
+                List<Guid> especiesSeleccionadas = pVW.Especies.Where(eVW => eVW.Seleccionar).Select(eVW => eVW.codEspecie).ToList<Guid>();
+                pVW.Proyecto.ESPECIE = db.ESPECIE.Where(e => especiesSeleccionadas.Contains(e.CODESP)).ToList<ESPECIE>();
+
+                List<int> localidadesSeleccionadas = pVW.Localidades.Where(lVW => lVW.Seleccionar).Select(lVW => lVW.codLocalidad).ToList<int>();
+                pVW.Proyecto.LOCALIDAD = db.LOCALIDAD.Where(l => localidadesSeleccionadas.Contains(l.CODLOCALIDAD)).ToList<LOCALIDAD>();
+
                 db.PROYECTO.Add(pVW.Proyecto);
                 db.SaveChanges();
+            
                 return RedirectToAction("Index");
             }
-            
-            ViewBag.Proyecto_NOMBRETIPOINV = new SelectList(db.OBJETIVOINVENTARIO, "NOMBRETIPOINV", "DESCRIPOBJETINV");
+
+            ViewBag.tipoInventario = new SelectList(db.OBJETIVOINVENTARIO, "NOMBRETIPOINV", "DESCRIPOBJETINV");
  
             List<KeyValuePair<string, string>> seleccionarSiNo = new List<KeyValuePair<string, string>>();
             seleccionarSiNo.Add(new KeyValuePair<string, string>("S", "Si"));
@@ -145,7 +171,13 @@ namespace SIFCA.Controllers
             tipoDisenioMuetral.Add(new KeyValuePair<string, string>("E", "Estratificado"));
             tipoDisenioMuetral.Add(new KeyValuePair<string, string>("B", "Bietapico"));
             ViewBag.tipoDisenioMuetral = new SelectList(tipoDisenioMuetral, "Key", "Value");
- 
+
+            List<KeyValuePair<string, string>> tipoProyecto = new List<KeyValuePair<string, string>>();
+            tipoProyecto.Add(new KeyValuePair<string, string>("IN", "Independiente"));
+            tipoProyecto.Add(new KeyValuePair<string, string>("CO", "Contenido"));
+            tipoProyecto.Add(new KeyValuePair<string, string>("CR", "Contenedor"));
+            ViewBag.tipoProyecto = new SelectList(tipoProyecto, "Key", "Value");
+
             return View(pVW);
         }
 
@@ -155,7 +187,7 @@ namespace SIFCA.Controllers
         {
             ViewBag.MenuActivo = "Proyecto";
 
-            ViewBag.Proyecto_NOMBRETIPOINV = new SelectList(db.OBJETIVOINVENTARIO, "NOMBRETIPOINV", "DESCRIPOBJETINV");
+            ViewBag.tipoInventario = new SelectList(db.OBJETIVOINVENTARIO, "NOMBRETIPOINV", "DESCRIPOBJETINV");
             List<KeyValuePair<string, string>> seleccionarSiNo = new List<KeyValuePair<string, string>>();
             seleccionarSiNo.Add(new KeyValuePair<string, string>("S", "Si"));
             seleccionarSiNo.Add(new KeyValuePair<string, string>("N", "No"));
@@ -174,6 +206,13 @@ namespace SIFCA.Controllers
             tipoDisenioMuetral.Add(new KeyValuePair<string, string>("E", "Estratificado"));
             tipoDisenioMuetral.Add(new KeyValuePair<string, string>("B", "Bietapico"));
             ViewBag.tipoDisenioMuetral = new SelectList(tipoDisenioMuetral, "Key", "Value");
+
+            List<KeyValuePair<string, string>> tipoProyecto = new List<KeyValuePair<string, string>>();
+            tipoProyecto.Add(new KeyValuePair<string, string>("IN", "Independiente"));
+            tipoProyecto.Add(new KeyValuePair<string, string>("CO", "Contenido"));
+            tipoProyecto.Add(new KeyValuePair<string, string>("CR", "Contenedor"));
+            ViewBag.tipoProyecto = new SelectList(tipoProyecto, "Key", "Value");
+
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -203,17 +242,29 @@ namespace SIFCA.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
 
-        public ActionResult Edit(ProyectoViewModel proyecto)
+        public ActionResult Edit(ProyectoViewModel pVW)
         {
-            ViewBag.MenuActivo = "Proyecto";
-            proyecto.Proyecto.USUARIO = (USUARIO)Session["USUARIO"];        
+            ViewBag.MenuActivo = "Proyecto";      
             if (ModelState.IsValid)
             {
-                db.Entry(proyecto).State = System.Data.Entity.EntityState.Modified;
+                pVW.Proyecto.LISTADODECOSTOS = pVW.Costos.Where(c => c.Seleccionar).Select(c => new LISTADODECOSTOS() { NROCOSTO = c.codCosto, VALOR = c.Valor }).ToList<LISTADODECOSTOS>();
+                pVW.Proyecto.LISTADODEESTRATOS = pVW.Estratos.Where(e => e.Seleccionar).Select(e => new LISTADODEESTRATOS() { CODEST = e.codEstrato, NROPROY = pVW.Proyecto.NROPROY, PESO = e.Peso }).ToList<LISTADODEESTRATOS>();
+
+                List<Guid> tipoLineaInvSeleccionadas = pVW.TipoLineaInventario.Where(tVW => tVW.Seleccionar).Select(tVW => tVW.codTipoLineaInventario).ToList<Guid>();
+                pVW.Proyecto.TIPOLINEAINVENTARIO = db.TIPOLINEAINVENTARIO.Where(t => tipoLineaInvSeleccionadas.Contains(t.NROTIPOLINEAINV)).ToList<TIPOLINEAINVENTARIO>();
+
+                List<Guid> especiesSeleccionadas = pVW.Especies.Where(eVW => eVW.Seleccionar).Select(eVW => eVW.codEspecie).ToList<Guid>();
+                pVW.Proyecto.ESPECIE = db.ESPECIE.Where(e => especiesSeleccionadas.Contains(e.CODESP)).ToList<ESPECIE>();
+
+                List<int> localidadesSeleccionadas = pVW.Localidades.Where(lVW => lVW.Seleccionar).Select(lVW => lVW.codLocalidad).ToList<int>();
+                pVW.Proyecto.LOCALIDAD = db.LOCALIDAD.Where(l => localidadesSeleccionadas.Contains(l.CODLOCALIDAD)).ToList<LOCALIDAD>();
+                
+                db.Entry(pVW.Proyecto).State = System.Data.Entity.EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.Proyecto_NOMBRETIPOINV = new SelectList(db.OBJETIVOINVENTARIO, "Proyecto_NOMBRETIPOINV", "DESCRIPOBJETINV", proyecto.Proyecto.NOMBRETIPOINV);
+            
+            ViewBag.tipoInventario = new SelectList(db.OBJETIVOINVENTARIO, "tipoInventario", "DESCRIPOBJETINV", pVW.Proyecto.NOMBRETIPOINV);
  
             List<KeyValuePair<string, string>> seleccionarSiNo = new List<KeyValuePair<string, string>>();
             seleccionarSiNo.Add(new KeyValuePair<string, string>("S", "Si"));
@@ -233,8 +284,14 @@ namespace SIFCA.Controllers
             tipoDisenioMuetral.Add(new KeyValuePair<string, string>("E", "Estratificado"));
             tipoDisenioMuetral.Add(new KeyValuePair<string, string>("B", "Bietapico"));
             ViewBag.tipoDisenioMuetral = new SelectList(tipoDisenioMuetral, "Key", "Value");
- 
-            return View(proyecto);
+
+            List<KeyValuePair<string, string>> tipoProyecto = new List<KeyValuePair<string, string>>();
+            tipoProyecto.Add(new KeyValuePair<string, string>("IN", "Independiente"));
+            tipoProyecto.Add(new KeyValuePair<string, string>("CO", "Contenido"));
+            tipoProyecto.Add(new KeyValuePair<string, string>("CR", "Contenedor"));
+            ViewBag.tipoProyecto = new SelectList(tipoProyecto, "Key", "Value");
+
+            return View(pVW);
         }
 
         // POST: PROYECTO/Delete/5

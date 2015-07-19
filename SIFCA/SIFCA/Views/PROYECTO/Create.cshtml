@@ -98,7 +98,7 @@
                 <div class="form-group">
                     @Html.LabelFor(model => model.Proyecto.NOMBRETIPOINV, "Tipo inventario", htmlAttributes: new { @class = "control-label col-md-2" })
                     <div class="col-md-10">
-                        @Html.DropDownList("Proyecto.NOMBRETIPOINV", (SelectList)@ViewBag.Proyecto_NOMBRETIPOINV, htmlAttributes: new { @class = "chosen-select form-control" })
+                        @Html.DropDownList("Proyecto.NOMBRETIPOINV", (SelectList)@ViewBag.tipoInventario, htmlAttributes: new { @class = "chosen-select form-control" })
                         @Html.ValidationMessageFor(model => model.Proyecto.NOMBRETIPOINV, "", new { @class = "text-danger" })
                     </div>
                 </div>
@@ -116,6 +116,14 @@
                     <div class="col-md-10">
                         @Html.TextAreaFor(model => model.Proyecto.DESCRIPCION, 5, 116, new { @class = "form-control" })
                         @Html.ValidationMessageFor(model => model.Proyecto.DESCRIPCION, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Proyecto.TIPOPROYECTO, "Tipo proyecto", htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.DropDownList("Proyecto.TIPOPROYECTO", (SelectList)@ViewBag.tipoInventario, htmlAttributes: new { @class = "chosen-select form-control" })
+                        @Html.ValidationMessageFor(model => model.Proyecto.TIPOPROYECTO, "", new { @class = "text-danger" })
                     </div>
                 </div>
 

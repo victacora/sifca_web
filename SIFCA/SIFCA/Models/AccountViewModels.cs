@@ -5,11 +5,11 @@ namespace SIFCA.Models
 {
     public class LoginViewModel
     {
-        [Required]
+        [Required(ErrorMessage="Este campo es requerido")]
         [Display(Name = "Usuario")]
         public string Login { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Este campo es requerido")]
         [DataType(DataType.Password)]
         [Display(Name = "Contraseña")]
         public string Password { get; set; }

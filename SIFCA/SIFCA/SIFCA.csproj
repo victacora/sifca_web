@@ -291,6 +291,7 @@
     <Compile Include="Models\USUARIO.cs">
       <DependentUpon>SIFCAModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Validaciones\PROYECTO.cs" />
     <Compile Include="Models\VARIABLE.cs">
       <DependentUpon>SIFCAModel.tt</DependentUpon>
     </Compile>
@@ -1228,11 +1229,13 @@
     <Content Include="Web_Conexion_myAspNet.Release.config">
       <DependentUpon>Web_Conexion_myAspNet.config</DependentUpon>
     </Content>
-    <Content Include="Views\PROYECTO\EditorTemplates\TipoLinaInventarioViewModel.cshtml" />
+    <Content Include="Views\PROYECTO\EditorTemplates\TipoLineaInventarioViewModel.cshtml" />
     <Content Include="Views\TIPOLINEAINVENTARIO\Create.cshtml" />
     <Content Include="Views\TIPOLINEAINVENTARIO\Details.cshtml" />
     <Content Include="Views\TIPOLINEAINVENTARIO\Edit.cshtml" />
     <Content Include="Views\TIPOLINEAINVENTARIO\Index.cshtml" />
+    <Content Include="Views\Shared\Error.cshtml" />
+    <Content Include="Views\Shared\NoPageFound.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -52,7 +52,7 @@
                                 @Html.DisplayFor(modelItem => item.DESCRIPCION)
                             </th>
                             <th>
-                                @Html.DisplayFor(modelItem => (item.TIPODISENIOMUESTRAL=="S"?"Simple":(item.TIPODISENIOMUESTRAL=="E"?"Estratificado":"Bietapico")))
+                                @(item.TIPODISENIOMUESTRAL=="S"?"Simple":(item.TIPODISENIOMUESTRAL=="E"?"Estratificado":"Bietapico"))
                             </th>
                             <th>
                             <th>

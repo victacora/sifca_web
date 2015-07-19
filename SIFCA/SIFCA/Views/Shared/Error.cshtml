@@ -1,0 +1,41 @@
+﻿@model System.Web.Mvc.HandleErrorInfo
+
+@{
+    ViewBag.Title = "Un error a ocurrido";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="panel panel-default">
+    <div class="panel-heading">
+        Un error a ocurrido mientras se procesaba su peticion.
+    </div>
+    <div class="panel-body">
+        
+        <strong class="text-danger">Resumen del error:</strong><br />
+        @Model.Exception.Message<br /><br />
+        <strong class="text-danger">@(Model.Exception is System.Data.Entity.Validation.DbEntityValidationException ? "Detalles del error:" : "StackTrace:")</strong>
+        <pre>
+        @if (Model.Exception is System.Data.Entity.Validation.DbEntityValidationException)
+        {
+            foreach (var eve in ((System.Data.Entity.Validation.DbEntityValidationException)Model.Exception).EntityValidationErrors)
+            {
+                @Html.Raw(string.Format("La entidad del tipo \"{0}\" en estado \"{1}\" ha genereado los siguientes errores:",eve.Entry.Entity.GetType().Name, eve.Entry.State));
+                foreach (var ve in eve.ValidationErrors)
+                {
+                    @Html.Raw(string.Format("- Propiedad: \"{0}\", Error: \"{1}\"",ve.PropertyName, ve.ErrorMessage));
+                }
+            }
+        }
+        else 
+        { 
+            @Model.Exception.StackTrace
+        }
+        </pre>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <a href="@Url.Action(@Model.ActionName, @Model.ControllerName)" class="btn btn-primary"><i class="fa fa-arrow-left "></i> Regresar</a>
+            </div>
+        </div>       
+    </div>
+</div>
+
