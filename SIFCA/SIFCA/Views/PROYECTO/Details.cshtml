@@ -201,7 +201,7 @@
                 </div>
 
                 <div class="form-group">
-                    @Html.LabelFor(model => model.Proyecto.NUMEROPARCELASAMUESTREAR, "Numero parcelas", htmlAttributes: new { @class = "control-label col-md-2" })
+                    @Html.LabelFor(model => model.Proyecto.NUMEROPARCELASAMUESTREAR, "Numero parcelas a muestrear", htmlAttributes: new { @class = "control-label col-md-2" })
                     <div class="col-md-10">
                         @Html.EditorFor(model => model.Proyecto.NUMEROPARCELASAMUESTREAR, new { htmlAttributes = new { @class = "form-control", @disabled = "disabled" } })
                         @Html.ValidationMessageFor(model => model.Proyecto.NUMEROPARCELASAMUESTREAR, "", new { @class = "text-danger" })

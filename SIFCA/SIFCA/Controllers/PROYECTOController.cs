@@ -305,19 +305,170 @@ namespace SIFCA.Controllers
             if (ModelState.IsValid && proyecto != null)
             {   
                 //Procesar si no esta en la lista agrgar si esta editar
-                pVW.Proyecto.LISTADODECOSTOS = pVW.Costos.Where(c => c.Seleccionar).Select(c => new LISTADODECOSTOS() { NROCOSTO = c.codCosto, VALOR = c.Valor }).ToList<LISTADODECOSTOS>();
-                pVW.Proyecto.LISTADODEESTRATOS = pVW.Estratos.Where(e => e.Seleccionar).Select(e => new LISTADODEESTRATOS() { CODEST = e.codEstrato, NROPROY = pVW.Proyecto.NROPROY, PESO = e.Peso,TAMANIOMUESTRA=e.TamanioMuestra }).ToList<LISTADODEESTRATOS>();
+                //copiar datos del proyecto para editar
+                proyecto.NOMBRE = pVW.Proyecto.NOMBRE;
+                proyecto.NOMBRETIPOINV = pVW.Proyecto.NOMBRETIPOINV;
+                proyecto.FECHA = pVW.Proyecto.FECHA;
+                proyecto.DESCRIPCION = pVW.Proyecto.DESCRIPCION;
+                proyecto.TIPOPROYECTO = pVW.Proyecto.TIPOPROYECTO;
+                proyecto.PRESUPUESTO = pVW.Proyecto.PRESUPUESTO;
+                proyecto.PLAZO = pVW.Proyecto.PLAZO;
+                proyecto.TIPOPLAZO = pVW.Proyecto.TIPOPLAZO;
+                proyecto.NUMEROPERSONAS = pVW.Proyecto.NUMEROPERSONAS;
+                proyecto.TIPODISENIOMUESTRAL = pVW.Proyecto.TIPODISENIOMUESTRAL;
+                proyecto.SELECCIONALEATORIA = pVW.Proyecto.SELECCIONALEATORIA;
+                proyecto.CONFIANZA = pVW.Proyecto.CONFIANZA;
+                proyecto.NUMEROPARCELAS = pVW.Proyecto.NUMEROPARCELAS;
+                proyecto.NUMEROPARCELASAMUESTREAR = pVW.Proyecto.NUMEROPARCELASAMUESTREAR;
+                proyecto.TAMANIOPARCELA = pVW.Proyecto.TAMANIOPARCELA;
+                proyecto.AREATOTAL = pVW.Proyecto.AREATOTAL;
+                proyecto.INTMUESTREO = pVW.Proyecto.INTMUESTREO;
+                proyecto.AREAREGENERACION = pVW.Proyecto.AREAREGENERACION;
+                proyecto.FACTORDEFORMA = pVW.Proyecto.FACTORDEFORMA;
 
-                List<Guid> tipoLineaInvSeleccionadas = pVW.TipoLineaInventario.Where(tVW => tVW.Seleccionar).Select(tVW => tVW.codTipoLineaInventario).ToList<Guid>();
-                pVW.Proyecto.TIPOLINEAINVENTARIO = db.TIPOLINEAINVENTARIO.Where(t => tipoLineaInvSeleccionadas.Contains(t.NROTIPOLINEAINV)).ToList<TIPOLINEAINVENTARIO>();
-
-                List<Guid> especiesSeleccionadas = pVW.Especies.Where(eVW => eVW.Seleccionar).Select(eVW => eVW.codEspecie).ToList<Guid>();
-                pVW.Proyecto.ESPECIE = db.ESPECIE.Where(e => especiesSeleccionadas.Contains(e.CODESP)).ToList<ESPECIE>();
-
-                List<int> localidadesSeleccionadas = pVW.Localidades.Where(lVW => lVW.Seleccionar).Select(lVW => lVW.codLocalidad).ToList<int>();
-                pVW.Proyecto.LOCALIDAD = db.LOCALIDAD.Where(l => localidadesSeleccionadas.Contains(l.CODLOCALIDAD)).ToList<LOCALIDAD>();
+                foreach (var especie in pVW.Especies)
+                {
+                    ESPECIE especieProyecto = proyecto.ESPECIE.FirstOrDefault(e => e.CODESP == especie.codEspecie);
+                    if (especie.Seleccionar)
+                    {
+                        if (especieProyecto == null)
+                        {
+                            especieProyecto = db.ESPECIE.FirstOrDefault(e => e.CODESP == especie.codEspecie);
+                            if (especieProyecto == null)
+                            {
+                                proyecto.ESPECIE.Add(especieProyecto);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        if (especieProyecto != null)
+                        {
+                            db.Entry(especieProyecto).State = System.Data.Entity.EntityState.Deleted;
+                        }
+                    }
+                }
                 
-                db.Entry(pVW.Proyecto).State = System.Data.Entity.EntityState.Modified;
+                foreach (var estrato in pVW.Estratos)
+                {
+                    LISTADODEESTRATOS estratoProyecto = proyecto.LISTADODEESTRATOS.FirstOrDefault(e => e.CODEST == estrato.codEstrato);
+                    if (estrato.Seleccionar)
+                    {
+                        if (estratoProyecto != null)
+                        {
+                            estratoProyecto.TAMANIOMUESTRA = estrato.TamanioMuestra;
+                            estratoProyecto.PESO = estrato.Peso;
+                            db.Entry(estratoProyecto).State = System.Data.Entity.EntityState.Modified;
+                        }
+                        else
+                        {
+                            proyecto.LISTADODEESTRATOS.Add(new LISTADODEESTRATOS() { NROPROY = proyecto.NROPROY, CODEST = estrato.codEstrato, TAMANIOMUESTRA = estrato.TamanioMuestra, PESO = estrato.Peso });
+                        }
+                    }
+                    else
+                    {
+                        if (estratoProyecto != null)
+                        {
+                            db.Entry(estratoProyecto).State = System.Data.Entity.EntityState.Deleted;
+                        }
+                    }
+                }
+
+                foreach (var tipoLineaInv in pVW.TipoLineaInventario)
+                {
+                    TIPOLINEAINVENTARIO tipoLineaInvProyecto = proyecto.TIPOLINEAINVENTARIO.FirstOrDefault(t => t.NROTIPOLINEAINV == tipoLineaInv.codTipoLineaInventario);
+                    if (tipoLineaInv.Seleccionar)
+                    {
+                        if (tipoLineaInvProyecto == null)
+                        {
+                            tipoLineaInvProyecto = db.TIPOLINEAINVENTARIO.FirstOrDefault(t => t.NROTIPOLINEAINV == tipoLineaInv.codTipoLineaInventario);
+                            if (tipoLineaInvProyecto == null)
+                            {
+                                proyecto.TIPOLINEAINVENTARIO.Add(tipoLineaInvProyecto);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        if (tipoLineaInvProyecto != null)
+                        {
+                            db.Entry(tipoLineaInvProyecto).State = System.Data.Entity.EntityState.Deleted;
+                        }
+                    }
+                }
+
+                foreach (var formula in pVW.Formulas)
+                {
+                    FORMULA formulaProyecto = proyecto.FORMULA.FirstOrDefault(f => f.NROFORMULA == formula.codFormula);
+                    if (formula.Seleccionar)
+                    {
+                        if (formulaProyecto == null)
+                        {
+                            formulaProyecto = db.FORMULA.FirstOrDefault(f => f.NROFORMULA == formula.codFormula);
+                            if (formulaProyecto == null)
+                            {
+                                proyecto.FORMULA.Add(formulaProyecto);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        if (formulaProyecto != null)
+                        {
+                            db.Entry(formulaProyecto).State = System.Data.Entity.EntityState.Deleted;
+                        }
+                    }
+                }
+
+                foreach (var costo in pVW.Costos)
+                {
+                    LISTADODECOSTOS costoProyecto = proyecto.LISTADODECOSTOS.FirstOrDefault(c => c.NROCOSTO == costo.codCosto);
+                    if (costo.Seleccionar)
+                    {
+                        if (costoProyecto != null)
+                        {
+                            costoProyecto.VALOR = costo.Valor;
+                            db.Entry(costoProyecto).State = System.Data.Entity.EntityState.Modified;
+                        }
+                        else
+                        {
+                            proyecto.LISTADODECOSTOS.Add(new LISTADODECOSTOS() { NROPROY = proyecto.NROPROY, NROCOSTO = costo.codCosto, VALOR = costo.Valor });
+                        }
+                    }
+                    else
+                    {
+                        if (costoProyecto != null)
+                        {
+                            db.Entry(costoProyecto).State = System.Data.Entity.EntityState.Deleted;
+                        }
+                    }
+                }
+                
+
+                foreach (var localidad in pVW.Localidades)
+                {
+                    LOCALIDAD localidadProyecto = proyecto.LOCALIDAD.FirstOrDefault(l => l.CODLOCALIDAD == localidad.codLocalidad);
+                    if (localidad.Seleccionar)
+                    {
+                        if (localidadProyecto == null)
+                        {
+                            localidadProyecto = db.LOCALIDAD.FirstOrDefault(l => l.CODLOCALIDAD == localidad.codLocalidad);
+                            if (localidadProyecto == null)
+                            {
+                                proyecto.LOCALIDAD.Add(localidadProyecto);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        if (localidadProyecto != null)
+                        {
+                            db.Entry(localidadProyecto).State = System.Data.Entity.EntityState.Deleted;
+                        }
+                    }
+                }
+
+                db.Entry(proyecto).State = System.Data.Entity.EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
