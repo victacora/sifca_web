@@ -66,14 +66,40 @@ namespace SIFCA.Controllers
                 return HttpNotFound();
             }
             else
-            {              
+            {
                 pVW.Proyecto = proyecto;
-                pVW.Especies = proyecto.ESPECIE.Select(e => new EspecieViewModel() { codEspecie = e.CODESP, Familia = e.FAMILIA, NombreCientifico = e.NOMCIENTIFICO, NombreComun = e.NOMCOMUN, Seleccionar = false }).ToList();
-                pVW.Estratos = proyecto.LISTADODEESTRATOS.Select(e => new EstratoViewModel() { codEstrato = e.CODEST, Nombre = e.ESTRATO.DESCRIPESTRATO, TamanioMuestra = 0, Peso = 0, Seleccionar = false }).ToList();
-                pVW.Formulas = proyecto.FORMULA.Select(e => new FormulaViewModel() { codFormula = e.NROFORMULA, Nombre = e.NOMBRE, Seleccionar = false }).ToList();
-                pVW.Localidades = proyecto.LOCALIDAD.Select(e => new LocalidadViewModel() { codLocalidad = e.CODLOCALIDAD, Nombre = e.NOMBRE, Seleccionar = false }).ToList();
-                pVW.TipoLineaInventario = proyecto.TIPOLINEAINVENTARIO.Select(e => new TipoLineaInventarioViewModel() { codTipoLineaInventario = e.NROTIPOLINEAINV, Nombre = e.NOMBRE, Seleccionar = false }).ToList();
-                pVW.Costos = proyecto.LISTADODECOSTOS.Select(e => new CostoViewModel() { codCosto = e.NROCOSTO, Nombre = e.COSTO.NOMBRE, Valor = 0, Seleccionar = false }).ToList();
+                List<Guid> especiesSeleccionadas = proyecto.ESPECIE.Select(e => e.CODESP).ToList<Guid>();
+                pVW.Especies = db.ESPECIE.Select(e => new EspecieViewModel() { codEspecie = e.CODESP, Familia = e.FAMILIA, NombreCientifico = e.NOMCIENTIFICO, NombreComun = e.NOMCOMUN, Seleccionar = (especiesSeleccionadas.Contains(e.CODESP) ? true : false) }).ToList();
+                foreach (var estrato in db.ESTRATO)
+                {
+                    var estratoProyecto = proyecto.LISTADODEESTRATOS.FirstOrDefault(e => e.CODEST == estrato.CODEST);
+                    if (estratoProyecto != null)
+                    {
+                        pVW.Estratos.Add(new EstratoViewModel() { codEstrato = estrato.CODEST, Nombre = estrato.DESCRIPESTRATO, TamanioMuestra = (estratoProyecto.TAMANIOMUESTRA != null ? (double)estratoProyecto.TAMANIOMUESTRA : 0), Peso = (estratoProyecto.PESO != null ? (double)estratoProyecto.PESO : 0), Seleccionar = true });
+                    }
+                    else
+                    {
+                        pVW.Estratos.Add(new EstratoViewModel() { codEstrato = estrato.CODEST, Nombre = estrato.DESCRIPESTRATO, TamanioMuestra = 0, Peso = 0, Seleccionar = false });
+                    }
+                }
+                List<Guid> formulasSeleccionadas = proyecto.FORMULA.Select(e => e.NROFORMULA).ToList<Guid>();
+                pVW.Formulas = db.FORMULA.Select(e => new FormulaViewModel() { codFormula = e.NROFORMULA, Nombre = e.NOMBRE, Seleccionar = (formulasSeleccionadas.Contains(e.NROFORMULA) ? true : false) }).ToList();
+                List<int> localidadesSeleccionadas = proyecto.LOCALIDAD.Select(e => e.CODLOCALIDAD).ToList<int>();
+                pVW.Localidades = db.LOCALIDAD.Select(e => new LocalidadViewModel() { codLocalidad = e.CODLOCALIDAD, Nombre = e.NOMBRE, Seleccionar = (localidadesSeleccionadas.Contains(e.CODLOCALIDAD) ? true : false) }).ToList();
+                List<Guid> tipoLineasSeleccionadas = proyecto.TIPOLINEAINVENTARIO.Select(e => e.NROTIPOLINEAINV).ToList<Guid>();
+                pVW.TipoLineaInventario = db.TIPOLINEAINVENTARIO.Select(e => new TipoLineaInventarioViewModel() { codTipoLineaInventario = e.NROTIPOLINEAINV, Nombre = e.NOMBRE, Seleccionar = (tipoLineasSeleccionadas.Contains(e.NROTIPOLINEAINV) ? true : false) }).ToList();
+                foreach (var costo in db.COSTO)
+                {
+                    var costoProyecto = proyecto.LISTADODECOSTOS.FirstOrDefault(c => c.NROCOSTO == costo.NROCOSTO);
+                    if (costoProyecto != null)
+                    {
+                        pVW.Costos.Add(new CostoViewModel() { codCosto = costo.NROCOSTO, Nombre = costo.NOMBRE, Valor = costoProyecto.VALOR, Seleccionar = true });
+                    }
+                    else
+                    {
+                        pVW.Costos.Add(new CostoViewModel() { codCosto = costo.NROCOSTO, Nombre = costo.NOMBRE, Valor = 0, Seleccionar = false });
+                    }
+                }
             }
             return View(pVW);
     }
@@ -138,7 +164,7 @@ namespace SIFCA.Controllers
             if (ModelState.IsValid)
             {
                 pVW.Proyecto.LISTADODECOSTOS = pVW.Costos.Where(c => c.Seleccionar).Select(c => new LISTADODECOSTOS() { NROCOSTO = c.codCosto, VALOR = c.Valor }).ToList<LISTADODECOSTOS>();
-                pVW.Proyecto.LISTADODEESTRATOS = pVW.Estratos.Where(e => e.Seleccionar).Select(e => new LISTADODEESTRATOS() { CODEST = e.codEstrato, NROPROY = pVW.Proyecto.NROPROY, PESO = e.Peso }).ToList<LISTADODEESTRATOS>();
+                pVW.Proyecto.LISTADODEESTRATOS = pVW.Estratos.Where(e => e.Seleccionar).Select(e => new LISTADODEESTRATOS() { CODEST = e.codEstrato, NROPROY = pVW.Proyecto.NROPROY, PESO = e.Peso,TAMANIOMUESTRA=e.TamanioMuestra }).ToList<LISTADODEESTRATOS>();
 
                 List<Guid> tipoLineaInvSeleccionadas = pVW.TipoLineaInventario.Where(tVW => tVW.Seleccionar).Select(tVW => tVW.codTipoLineaInventario).ToList<Guid>();
                 pVW.Proyecto.TIPOLINEAINVENTARIO = db.TIPOLINEAINVENTARIO.Where(t => tipoLineaInvSeleccionadas.Contains(t.NROTIPOLINEAINV)).ToList<TIPOLINEAINVENTARIO>();
@@ -232,16 +258,36 @@ namespace SIFCA.Controllers
                 pVW.Proyecto = proyecto;
                 List<Guid> especiesSeleccionadas = proyecto.ESPECIE.Select(e => e.CODESP).ToList<Guid>();
                 pVW.Especies = db.ESPECIE.Select(e => new EspecieViewModel() { codEspecie = e.CODESP, Familia = e.FAMILIA, NombreCientifico = e.NOMCIENTIFICO, NombreComun = e.NOMCOMUN, Seleccionar = (especiesSeleccionadas.Contains(e.CODESP)?true:false) }).ToList();
-                List<int> estratosSeleccionados = proyecto.LISTADODEESTRATOS.Select(e => e.CODEST).ToList<int>();
-                pVW.Estratos = db.ESTRATO.Select(e => new EstratoViewModel() { codEstrato = e.CODEST, Nombre = e.DESCRIPESTRATO, TamanioMuestra = 0, Peso = 0, Seleccionar = (estratosSeleccionados.Contains(e.CODEST) ? true : false) }).ToList();
+                foreach (var estrato in db.ESTRATO)
+                {
+                    var estratoProyecto = proyecto.LISTADODEESTRATOS.FirstOrDefault(e => e.CODEST == estrato.CODEST);
+                    if (estratoProyecto != null)
+                    {
+                        pVW.Estratos.Add(new EstratoViewModel() { codEstrato = estrato.CODEST, Nombre = estrato.DESCRIPESTRATO, TamanioMuestra = (estratoProyecto.TAMANIOMUESTRA!=null?(double)estratoProyecto.TAMANIOMUESTRA:0), Peso = (estratoProyecto.PESO!=null?(double)estratoProyecto.PESO:0), Seleccionar = true });
+                    }
+                    else
+                    {
+                        pVW.Estratos.Add(new EstratoViewModel() { codEstrato = estrato.CODEST, Nombre = estrato.DESCRIPESTRATO, TamanioMuestra=0, Peso=0, Seleccionar = false });
+                    }
+                }
                 List<Guid> formulasSeleccionadas = proyecto.FORMULA.Select(e => e.NROFORMULA).ToList<Guid>();
                 pVW.Formulas = db.FORMULA.Select(e => new FormulaViewModel() { codFormula = e.NROFORMULA, Nombre = e.NOMBRE, Seleccionar=(formulasSeleccionadas.Contains(e.NROFORMULA) ? true : false) }).ToList();
                 List<int> localidadesSeleccionadas = proyecto.LOCALIDAD.Select(e => e.CODLOCALIDAD).ToList<int>();
                 pVW.Localidades = db.LOCALIDAD.Select(e => new LocalidadViewModel() { codLocalidad = e.CODLOCALIDAD, Nombre = e.NOMBRE, Seleccionar = (localidadesSeleccionadas.Contains(e.CODLOCALIDAD) ? true : false) }).ToList();
                 List<Guid> tipoLineasSeleccionadas = proyecto.TIPOLINEAINVENTARIO.Select(e => e.NROTIPOLINEAINV).ToList<Guid>();
                 pVW.TipoLineaInventario = db.TIPOLINEAINVENTARIO.Select(e => new TipoLineaInventarioViewModel() { codTipoLineaInventario = e.NROTIPOLINEAINV, Nombre = e.NOMBRE, Seleccionar = (tipoLineasSeleccionadas.Contains(e.NROTIPOLINEAINV) ? true : false) }).ToList();
-                List<Guid> costosSeleccionadas = proyecto.LISTADODECOSTOS.Select(e => e.NROCOSTO).ToList<Guid>();
-                pVW.Costos = db.COSTO.Select(e => new CostoViewModel() { codCosto = e.NROCOSTO, Nombre = e.NOMBRE, Valor = 0, Seleccionar = (costosSeleccionadas.Contains(e.NROCOSTO) ? true : false) }).ToList();
+                foreach (var costo in db.COSTO)
+                {
+                    var costoProyecto=proyecto.LISTADODECOSTOS.FirstOrDefault(c => c.NROCOSTO == costo.NROCOSTO);
+                    if (costoProyecto != null)
+                    {
+                        pVW.Costos.Add(new CostoViewModel() { codCosto = costo.NROCOSTO, Nombre = costo.NOMBRE, Valor = costoProyecto.VALOR, Seleccionar = true });
+                    }
+                    else 
+                    {
+                        pVW.Costos.Add(new CostoViewModel() { codCosto = costo.NROCOSTO, Nombre = costo.NOMBRE, Valor = 0, Seleccionar = false });
+                    }
+                }
             }
             return View(pVW);
         }
@@ -257,17 +303,10 @@ namespace SIFCA.Controllers
             ViewBag.MenuActivo = "Proyecto";      
             PROYECTO proyecto = db.PROYECTO.Find(pVW.Proyecto.NROPROY);
             if (ModelState.IsValid && proyecto != null)
-            {
-
-                proyecto.ESPECIE.Clear();
-                proyecto.LISTADODEESTRATOS.Clear();
-                proyecto.FORMULA.Clear();
-                proyecto.LOCALIDAD.Clear();
-                proyecto.TIPOLINEAINVENTARIO.Clear();
-                proyecto.LISTADODECOSTOS.Clear();
-
+            {   
+                //Procesar si no esta en la lista agrgar si esta editar
                 pVW.Proyecto.LISTADODECOSTOS = pVW.Costos.Where(c => c.Seleccionar).Select(c => new LISTADODECOSTOS() { NROCOSTO = c.codCosto, VALOR = c.Valor }).ToList<LISTADODECOSTOS>();
-                pVW.Proyecto.LISTADODEESTRATOS = pVW.Estratos.Where(e => e.Seleccionar).Select(e => new LISTADODEESTRATOS() { CODEST = e.codEstrato, NROPROY = pVW.Proyecto.NROPROY, PESO = e.Peso }).ToList<LISTADODEESTRATOS>();
+                pVW.Proyecto.LISTADODEESTRATOS = pVW.Estratos.Where(e => e.Seleccionar).Select(e => new LISTADODEESTRATOS() { CODEST = e.codEstrato, NROPROY = pVW.Proyecto.NROPROY, PESO = e.Peso,TAMANIOMUESTRA=e.TamanioMuestra }).ToList<LISTADODEESTRATOS>();
 
                 List<Guid> tipoLineaInvSeleccionadas = pVW.TipoLineaInventario.Where(tVW => tVW.Seleccionar).Select(tVW => tVW.codTipoLineaInventario).ToList<Guid>();
                 pVW.Proyecto.TIPOLINEAINVENTARIO = db.TIPOLINEAINVENTARIO.Where(t => tipoLineaInvSeleccionadas.Contains(t.NROTIPOLINEAINV)).ToList<TIPOLINEAINVENTARIO>();
