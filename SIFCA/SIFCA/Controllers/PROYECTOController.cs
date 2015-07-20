@@ -255,8 +255,17 @@ namespace SIFCA.Controllers
         public ActionResult Edit(ProyectoViewModel pVW)
         {
             ViewBag.MenuActivo = "Proyecto";      
-            if (ModelState.IsValid)
+            PROYECTO proyecto = db.PROYECTO.Find(pVW.Proyecto.NROPROY);
+            if (ModelState.IsValid && proyecto != null)
             {
+
+                proyecto.ESPECIE.Clear();
+                proyecto.LISTADODEESTRATOS.Clear();
+                proyecto.FORMULA.Clear();
+                proyecto.LOCALIDAD.Clear();
+                proyecto.TIPOLINEAINVENTARIO.Clear();
+                proyecto.LISTADODECOSTOS.Clear();
+
                 pVW.Proyecto.LISTADODECOSTOS = pVW.Costos.Where(c => c.Seleccionar).Select(c => new LISTADODECOSTOS() { NROCOSTO = c.codCosto, VALOR = c.Valor }).ToList<LISTADODECOSTOS>();
                 pVW.Proyecto.LISTADODEESTRATOS = pVW.Estratos.Where(e => e.Seleccionar).Select(e => new LISTADODEESTRATOS() { CODEST = e.codEstrato, NROPROY = pVW.Proyecto.NROPROY, PESO = e.Peso }).ToList<LISTADODEESTRATOS>();
 
