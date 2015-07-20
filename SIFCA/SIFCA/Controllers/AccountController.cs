@@ -76,7 +76,7 @@ namespace SIFCA.Controllers
                     Session["USUARIO"] = usuario; 
                 return RedirectToAction("Index", "Home");
             }
-            ModelState.AddModelError("", "Intento inválido de inicio de sesión.");
+            else ModelState.AddModelError("", "Intento inválido de inicio de sesión.");
             return View(model);
         }
 

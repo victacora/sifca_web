@@ -43,7 +43,7 @@
                     {
                         <tr class="gradeA">
                             <th>
-                                @Html.DisplayFor(modelItem => item.FECHA)
+                                @(item.FECHA.ToShortDateString())
                             </th>
                             <th>
                                 @Html.DisplayFor(modelItem => item.NOMBRE)
@@ -55,8 +55,7 @@
                                 @(item.TIPODISENIOMUESTRAL=="S"?"Simple":(item.TIPODISENIOMUESTRAL=="E"?"Estratificado":"Bietapico"))
                             </th>
                             <th>
-                            <th>
-                                @Html.DisplayFor(modelItem => item.INTMUESTREO.ToString("P2"))
+                                @(item.INTMUESTREO.ToString("P2"))
                             </th>
                             <td><a href="@Url.Action("Edit", "PROYECTO", new { id = item.NROPROY })"><i class="fa fa-edit "></i>Editar</a></td>
                             <td><a href="@Url.Action("Details", "PROYECTO", new { id = item.NROPROY })"><i class="fa fa-search "></i>Ver detalles</a></td>

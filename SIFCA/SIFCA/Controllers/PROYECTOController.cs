@@ -130,7 +130,11 @@ namespace SIFCA.Controllers
         {
             ViewBag.MenuActivo = "Proyecto";
             pVW.Proyecto.NROPROY = Guid.NewGuid();
-            pVW.Proyecto.USUARIO = (USUARIO)Session["USUARIO"];
+            if (Session["USUARIO"] == null)
+            {
+                return RedirectToAction("Login", "Account", null);
+            }
+            else pVW.Proyecto.NROUSUARIO = ((USUARIO)Session["USUARIO"]).NROUSUARIO;
             if (ModelState.IsValid)
             {
                 pVW.Proyecto.LISTADODECOSTOS = pVW.Costos.Where(c => c.Seleccionar).Select(c => new LISTADODECOSTOS() { NROCOSTO = c.codCosto, VALOR = c.Valor }).ToList<LISTADODECOSTOS>();
@@ -226,12 +230,18 @@ namespace SIFCA.Controllers
             else
             {
                 pVW.Proyecto = proyecto;
-                pVW.Especies = proyecto.ESPECIE.Select(e => new EspecieViewModel() { codEspecie = e.CODESP, Familia = e.FAMILIA, NombreCientifico = e.NOMCIENTIFICO, NombreComun = e.NOMCOMUN, Seleccionar = false }).ToList();
-                pVW.Estratos = proyecto.LISTADODEESTRATOS.Select(e => new EstratoViewModel() { codEstrato = e.CODEST, Nombre = e.ESTRATO.DESCRIPESTRATO, TamanioMuestra = 0, Peso = 0, Seleccionar = false }).ToList();
-                pVW.Formulas = proyecto.FORMULA.Select(e => new FormulaViewModel() { codFormula = e.NROFORMULA, Nombre = e.NOMBRE, Seleccionar = false }).ToList();
-                pVW.Localidades = proyecto.LOCALIDAD.Select(e => new LocalidadViewModel() { codLocalidad = e.CODLOCALIDAD, Nombre = e.NOMBRE, Seleccionar = false }).ToList();
-                pVW.TipoLineaInventario = proyecto.TIPOLINEAINVENTARIO.Select(e => new TipoLineaInventarioViewModel() { codTipoLineaInventario = e.NROTIPOLINEAINV, Nombre = e.NOMBRE, Seleccionar = false }).ToList();
-                pVW.Costos = proyecto.LISTADODECOSTOS.Select(e => new CostoViewModel() { codCosto = e.NROCOSTO, Nombre = e.COSTO.NOMBRE, Valor = 0, Seleccionar = false }).ToList();
+                List<Guid> especiesSeleccionadas = proyecto.ESPECIE.Select(e => e.CODESP).ToList<Guid>();
+                pVW.Especies = db.ESPECIE.Select(e => new EspecieViewModel() { codEspecie = e.CODESP, Familia = e.FAMILIA, NombreCientifico = e.NOMCIENTIFICO, NombreComun = e.NOMCOMUN, Seleccionar = (especiesSeleccionadas.Contains(e.CODESP)?true:false) }).ToList();
+                List<int> estratosSeleccionados = proyecto.LISTADODEESTRATOS.Select(e => e.CODEST).ToList<int>();
+                pVW.Estratos = db.ESTRATO.Select(e => new EstratoViewModel() { codEstrato = e.CODEST, Nombre = e.DESCRIPESTRATO, TamanioMuestra = 0, Peso = 0, Seleccionar = (estratosSeleccionados.Contains(e.CODEST) ? true : false) }).ToList();
+                List<Guid> formulasSeleccionadas = proyecto.FORMULA.Select(e => e.NROFORMULA).ToList<Guid>();
+                pVW.Formulas = db.FORMULA.Select(e => new FormulaViewModel() { codFormula = e.NROFORMULA, Nombre = e.NOMBRE, Seleccionar=(formulasSeleccionadas.Contains(e.NROFORMULA) ? true : false) }).ToList();
+                List<int> localidadesSeleccionadas = proyecto.LOCALIDAD.Select(e => e.CODLOCALIDAD).ToList<int>();
+                pVW.Localidades = db.LOCALIDAD.Select(e => new LocalidadViewModel() { codLocalidad = e.CODLOCALIDAD, Nombre = e.NOMBRE, Seleccionar = (localidadesSeleccionadas.Contains(e.CODLOCALIDAD) ? true : false) }).ToList();
+                List<Guid> tipoLineasSeleccionadas = proyecto.TIPOLINEAINVENTARIO.Select(e => e.NROTIPOLINEAINV).ToList<Guid>();
+                pVW.TipoLineaInventario = db.TIPOLINEAINVENTARIO.Select(e => new TipoLineaInventarioViewModel() { codTipoLineaInventario = e.NROTIPOLINEAINV, Nombre = e.NOMBRE, Seleccionar = (tipoLineasSeleccionadas.Contains(e.NROTIPOLINEAINV) ? true : false) }).ToList();
+                List<Guid> costosSeleccionadas = proyecto.LISTADODECOSTOS.Select(e => e.NROCOSTO).ToList<Guid>();
+                pVW.Costos = db.COSTO.Select(e => new CostoViewModel() { codCosto = e.NROCOSTO, Nombre = e.NOMBRE, Valor = 0, Seleccionar = (costosSeleccionadas.Contains(e.NROCOSTO) ? true : false) }).ToList();
             }
             return View(pVW);
         }

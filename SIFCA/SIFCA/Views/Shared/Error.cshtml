@@ -13,7 +13,7 @@
         
         <strong class="text-danger">Resumen del error:</strong><br />
         @Model.Exception.Message<br /><br />
-        <strong class="text-danger">@(Model.Exception is System.Data.Entity.Validation.DbEntityValidationException ? "Detalles del error:" : "StackTrace:")</strong>
+        <strong class="text-danger">@(Model.Exception is System.Data.Entity.Validation.DbEntityValidationException || Model.Exception is System.Data.Entity.Infrastructure.DbUpdateException ? "Detalles del error:" : "StackTrace:")</strong>
         <pre>
         @if (Model.Exception is System.Data.Entity.Validation.DbEntityValidationException)
         {
@@ -24,6 +24,18 @@
                 {
                     @Html.Raw(string.Format("- Propiedad: \"{0}\", Error: \"{1}\"",ve.PropertyName, ve.ErrorMessage));
                 }
+            }
+        }
+        @if (Model.Exception is System.Data.Entity.Infrastructure.DbUpdateException)
+        {
+            @Html.Raw(string.Format("Excepcion interna: {0}", Model.Exception.InnerException));
+            foreach (System.Collections.DictionaryEntry result in ((System.Data.Entity.Infrastructure.DbUpdateException)Model.Exception).Data)
+            {
+                     @Html.Raw(string.Format("Clave: {0}  Valor: {1}","'" + result.Key.ToString() + "'", result.Value));
+            }
+            foreach (var result in ((System.Data.Entity.Infrastructure.DbUpdateException)Model.Exception).Entries)
+            {
+                @Html.Raw(string.Format("El tipo {0} forma parte del error ", result.Entity.GetType().Name));
             }
         }
         else 
