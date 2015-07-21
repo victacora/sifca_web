@@ -14,7 +14,7 @@
         <strong class="text-danger">Resumen del error:</strong><br />
         @Model.Exception.Message<br /><br />
         <strong class="text-danger">@(Model.Exception is System.Data.Entity.Validation.DbEntityValidationException || Model.Exception is System.Data.Entity.Infrastructure.DbUpdateException ? "Detalles del error:" : "StackTrace:")</strong>
-        <pre>
+        <pre style="font-size:medium;" align="justify">
         @if (Model.Exception is System.Data.Entity.Validation.DbEntityValidationException)
         {
             foreach (var eve in ((System.Data.Entity.Validation.DbEntityValidationException)Model.Exception).EntityValidationErrors)

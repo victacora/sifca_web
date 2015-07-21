@@ -121,9 +121,9 @@ namespace SIFCA.Controllers
 
                 return Content(Boolean.TrueString);
             }
-            catch
+            catch (Exception ex)
             {//TODO: Log error				
-                return Content(Boolean.FalseString);
+                return Content("<strong class='text-danger'>Resumen del error:</strong><br />" + ex.Message + "<br /><strong class='text-danger'>Detalles del error:</strong><br />" + ex.InnerException);
             }
         }
 

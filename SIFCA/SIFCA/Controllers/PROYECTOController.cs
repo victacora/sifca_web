@@ -75,11 +75,11 @@ namespace SIFCA.Controllers
                     var estratoProyecto = proyecto.LISTADODEESTRATOS.FirstOrDefault(e => e.CODEST == estrato.CODEST);
                     if (estratoProyecto != null)
                     {
-                        pVW.Estratos.Add(new EstratoViewModel() { codEstrato = estrato.CODEST, Nombre = estrato.DESCRIPESTRATO, TamanioMuestra = (estratoProyecto.TAMANIOMUESTRA != null ? (double)estratoProyecto.TAMANIOMUESTRA : 0), Peso = (estratoProyecto.PESO != null ? (double)estratoProyecto.PESO : 0), Seleccionar = true });
+                        pVW.Estratos.Add(new EstratoViewModel() { codEstrato = estrato.CODEST, Nombre = estrato.DESCRIPESTRATO, TamanioMuestra = (estratoProyecto.TAMANIOMUESTRA != null ? (double)estratoProyecto.TAMANIOMUESTRA : 0), Peso = (estratoProyecto.PESO != null ? (double)estratoProyecto.PESO : 0),ConfiguracionMapa=estratoProyecto.CONFIGURACIONMAPA, Seleccionar = true });
                     }
                     else
                     {
-                        pVW.Estratos.Add(new EstratoViewModel() { codEstrato = estrato.CODEST, Nombre = estrato.DESCRIPESTRATO, TamanioMuestra = 0, Peso = 0, Seleccionar = false });
+                        pVW.Estratos.Add(new EstratoViewModel() { codEstrato = estrato.CODEST, Nombre = estrato.DESCRIPESTRATO, TamanioMuestra = 0, Peso = 0,ConfiguracionMapa="-", Seleccionar = false });
                     }
                 }
                 List<Guid> formulasSeleccionadas = proyecto.FORMULA.Select(e => e.NROFORMULA).ToList<Guid>();
@@ -139,7 +139,7 @@ namespace SIFCA.Controllers
         ProyectoViewModel pVW = new ProyectoViewModel();
         pVW.Proyecto.FECHA = DateTime.Now;
         pVW.Especies = db.ESPECIE.Select(e => new EspecieViewModel() { codEspecie = e.CODESP,Familia=e.FAMILIA, NombreCientifico = e.NOMCIENTIFICO, NombreComun = e.NOMCOMUN, Seleccionar = false }).ToList();
-        pVW.Estratos = db.ESTRATO.Select(e => new EstratoViewModel() { codEstrato = e.CODEST, Nombre = e.DESCRIPESTRATO,TamanioMuestra=0,Peso=0, Seleccionar = false }).ToList();
+        pVW.Estratos = db.ESTRATO.Select(e => new EstratoViewModel() { codEstrato = e.CODEST, Nombre = e.DESCRIPESTRATO,TamanioMuestra=0,Peso=0,ConfiguracionMapa="-", Seleccionar = false }).ToList();
         pVW.Formulas = db.FORMULA.Select(e => new FormulaViewModel() { codFormula = e.NROFORMULA, Nombre = e.NOMBRE, Seleccionar = false }).ToList();
         pVW.Localidades = db.LOCALIDAD.Select(e => new LocalidadViewModel() { codLocalidad = e.CODLOCALIDAD, Nombre = e.NOMBRE, Seleccionar = false }).ToList();
         pVW.TipoLineaInventario = db.TIPOLINEAINVENTARIO.Select(e => new TipoLineaInventarioViewModel() { codTipoLineaInventario = e.NROTIPOLINEAINV, Nombre = e.NOMBRE, Seleccionar = false }).ToList();
@@ -164,7 +164,7 @@ namespace SIFCA.Controllers
             if (ModelState.IsValid)
             {
                 pVW.Proyecto.LISTADODECOSTOS = pVW.Costos.Where(c => c.Seleccionar).Select(c => new LISTADODECOSTOS() { NROCOSTO = c.codCosto, VALOR = c.Valor }).ToList<LISTADODECOSTOS>();
-                pVW.Proyecto.LISTADODEESTRATOS = pVW.Estratos.Where(e => e.Seleccionar).Select(e => new LISTADODEESTRATOS() { CODEST = e.codEstrato, NROPROY = pVW.Proyecto.NROPROY, PESO = e.Peso,TAMANIOMUESTRA=e.TamanioMuestra }).ToList<LISTADODEESTRATOS>();
+                pVW.Proyecto.LISTADODEESTRATOS = pVW.Estratos.Where(e => e.Seleccionar).Select(e => new LISTADODEESTRATOS() { CODEST = e.codEstrato, NROPROY = pVW.Proyecto.NROPROY, PESO = e.Peso,TAMANIOMUESTRA=e.TamanioMuestra,CONFIGURACIONMAPA=e.ConfiguracionMapa }).ToList<LISTADODEESTRATOS>();
 
                 List<Guid> tipoLineaInvSeleccionadas = pVW.TipoLineaInventario.Where(tVW => tVW.Seleccionar).Select(tVW => tVW.codTipoLineaInventario).ToList<Guid>();
                 pVW.Proyecto.TIPOLINEAINVENTARIO = db.TIPOLINEAINVENTARIO.Where(t => tipoLineaInvSeleccionadas.Contains(t.NROTIPOLINEAINV)).ToList<TIPOLINEAINVENTARIO>();
@@ -258,16 +258,16 @@ namespace SIFCA.Controllers
                 pVW.Proyecto = proyecto;
                 List<Guid> especiesSeleccionadas = proyecto.ESPECIE.Select(e => e.CODESP).ToList<Guid>();
                 pVW.Especies = db.ESPECIE.Select(e => new EspecieViewModel() { codEspecie = e.CODESP, Familia = e.FAMILIA, NombreCientifico = e.NOMCIENTIFICO, NombreComun = e.NOMCOMUN, Seleccionar = (especiesSeleccionadas.Contains(e.CODESP)?true:false) }).ToList();
-                foreach (var estrato in db.ESTRATO)
+                foreach (var estrato in db.ESTRATO.ToList())
                 {
                     var estratoProyecto = proyecto.LISTADODEESTRATOS.FirstOrDefault(e => e.CODEST == estrato.CODEST);
                     if (estratoProyecto != null)
                     {
-                        pVW.Estratos.Add(new EstratoViewModel() { codEstrato = estrato.CODEST, Nombre = estrato.DESCRIPESTRATO, TamanioMuestra = (estratoProyecto.TAMANIOMUESTRA!=null?(double)estratoProyecto.TAMANIOMUESTRA:0), Peso = (estratoProyecto.PESO!=null?(double)estratoProyecto.PESO:0), Seleccionar = true });
+                        pVW.Estratos.Add(new EstratoViewModel() { codEstrato = estrato.CODEST, Nombre = estrato.DESCRIPESTRATO, TamanioMuestra = (estratoProyecto.TAMANIOMUESTRA!=null?(double)estratoProyecto.TAMANIOMUESTRA:0), Peso = (estratoProyecto.PESO!=null?(double)estratoProyecto.PESO:0),ConfiguracionMapa=estratoProyecto.CONFIGURACIONMAPA, Seleccionar = true });
                     }
                     else
                     {
-                        pVW.Estratos.Add(new EstratoViewModel() { codEstrato = estrato.CODEST, Nombre = estrato.DESCRIPESTRATO, TamanioMuestra=0, Peso=0, Seleccionar = false });
+                        pVW.Estratos.Add(new EstratoViewModel() { codEstrato = estrato.CODEST, Nombre = estrato.DESCRIPESTRATO, TamanioMuestra=0, Peso=0,ConfiguracionMapa="-", Seleccionar = false });
                     }
                 }
                 List<Guid> formulasSeleccionadas = proyecto.FORMULA.Select(e => e.NROFORMULA).ToList<Guid>();
@@ -276,7 +276,7 @@ namespace SIFCA.Controllers
                 pVW.Localidades = db.LOCALIDAD.Select(e => new LocalidadViewModel() { codLocalidad = e.CODLOCALIDAD, Nombre = e.NOMBRE, Seleccionar = (localidadesSeleccionadas.Contains(e.CODLOCALIDAD) ? true : false) }).ToList();
                 List<Guid> tipoLineasSeleccionadas = proyecto.TIPOLINEAINVENTARIO.Select(e => e.NROTIPOLINEAINV).ToList<Guid>();
                 pVW.TipoLineaInventario = db.TIPOLINEAINVENTARIO.Select(e => new TipoLineaInventarioViewModel() { codTipoLineaInventario = e.NROTIPOLINEAINV, Nombre = e.NOMBRE, Seleccionar = (tipoLineasSeleccionadas.Contains(e.NROTIPOLINEAINV) ? true : false) }).ToList();
-                foreach (var costo in db.COSTO)
+                foreach (var costo in db.COSTO.ToList())
                 {
                     var costoProyecto=proyecto.LISTADODECOSTOS.FirstOrDefault(c => c.NROCOSTO == costo.NROCOSTO);
                     if (costoProyecto != null)
@@ -334,7 +334,7 @@ namespace SIFCA.Controllers
                         if (especieProyecto == null)
                         {
                             especieProyecto = db.ESPECIE.FirstOrDefault(e => e.CODESP == especie.codEspecie);
-                            if (especieProyecto == null)
+                            if (especieProyecto != null)
                             {
                                 proyecto.ESPECIE.Add(especieProyecto);
                             }
@@ -344,7 +344,7 @@ namespace SIFCA.Controllers
                     {
                         if (especieProyecto != null)
                         {
-                            db.Entry(especieProyecto).State = System.Data.Entity.EntityState.Deleted;
+                            proyecto.ESPECIE.Remove(especieProyecto);
                         }
                     }
                 }
@@ -358,18 +358,19 @@ namespace SIFCA.Controllers
                         {
                             estratoProyecto.TAMANIOMUESTRA = estrato.TamanioMuestra;
                             estratoProyecto.PESO = estrato.Peso;
+                            estratoProyecto.CONFIGURACIONMAPA = estrato.ConfiguracionMapa;
                             db.Entry(estratoProyecto).State = System.Data.Entity.EntityState.Modified;
                         }
                         else
                         {
-                            proyecto.LISTADODEESTRATOS.Add(new LISTADODEESTRATOS() { NROPROY = proyecto.NROPROY, CODEST = estrato.codEstrato, TAMANIOMUESTRA = estrato.TamanioMuestra, PESO = estrato.Peso });
+                            proyecto.LISTADODEESTRATOS.Add(new LISTADODEESTRATOS() { NROPROY = proyecto.NROPROY, CODEST = estrato.codEstrato, TAMANIOMUESTRA = estrato.TamanioMuestra, PESO = estrato.Peso,CONFIGURACIONMAPA=estrato.ConfiguracionMapa });
                         }
                     }
                     else
                     {
                         if (estratoProyecto != null)
                         {
-                            db.Entry(estratoProyecto).State = System.Data.Entity.EntityState.Deleted;
+                            proyecto.LISTADODEESTRATOS.Remove(estratoProyecto);
                         }
                     }
                 }
@@ -382,7 +383,7 @@ namespace SIFCA.Controllers
                         if (tipoLineaInvProyecto == null)
                         {
                             tipoLineaInvProyecto = db.TIPOLINEAINVENTARIO.FirstOrDefault(t => t.NROTIPOLINEAINV == tipoLineaInv.codTipoLineaInventario);
-                            if (tipoLineaInvProyecto == null)
+                            if (tipoLineaInvProyecto != null)
                             {
                                 proyecto.TIPOLINEAINVENTARIO.Add(tipoLineaInvProyecto);
                             }
@@ -392,7 +393,7 @@ namespace SIFCA.Controllers
                     {
                         if (tipoLineaInvProyecto != null)
                         {
-                            db.Entry(tipoLineaInvProyecto).State = System.Data.Entity.EntityState.Deleted;
+                            proyecto.TIPOLINEAINVENTARIO.Remove(tipoLineaInvProyecto);
                         }
                     }
                 }
@@ -405,7 +406,7 @@ namespace SIFCA.Controllers
                         if (formulaProyecto == null)
                         {
                             formulaProyecto = db.FORMULA.FirstOrDefault(f => f.NROFORMULA == formula.codFormula);
-                            if (formulaProyecto == null)
+                            if (formulaProyecto != null)
                             {
                                 proyecto.FORMULA.Add(formulaProyecto);
                             }
@@ -415,7 +416,7 @@ namespace SIFCA.Controllers
                     {
                         if (formulaProyecto != null)
                         {
-                            db.Entry(formulaProyecto).State = System.Data.Entity.EntityState.Deleted;
+                            proyecto.FORMULA.Remove(formulaProyecto);
                         }
                     }
                 }
@@ -439,7 +440,7 @@ namespace SIFCA.Controllers
                     {
                         if (costoProyecto != null)
                         {
-                            db.Entry(costoProyecto).State = System.Data.Entity.EntityState.Deleted;
+                            proyecto.LISTADODECOSTOS.Remove(costoProyecto);
                         }
                     }
                 }
@@ -463,7 +464,7 @@ namespace SIFCA.Controllers
                     {
                         if (localidadProyecto != null)
                         {
-                            db.Entry(localidadProyecto).State = System.Data.Entity.EntityState.Deleted;
+                            proyecto.LOCALIDAD.Remove(localidadProyecto);
                         }
                     }
                 }
@@ -511,14 +512,23 @@ namespace SIFCA.Controllers
             try
             {
                 ViewBag.MenuActivo = "Proyecto";
-                PROYECTO pROYECTO = db.PROYECTO.Find(id);
-                db.PROYECTO.Remove(pROYECTO);
-                db.SaveChanges();
+                PROYECTO proyecto = db.PROYECTO.Find(id);
+                if (proyecto != null)
+                {
+                    db.Database.ExecuteSqlCommand("DELETE LISTADODEESPECIES WHERE NROPROY='"+proyecto.NROPROY+"'");
+                    db.Database.ExecuteSqlCommand("DELETE LISTADODEESTRATOS WHERE NROPROY='" + proyecto.NROPROY + "'");
+                    db.Database.ExecuteSqlCommand("DELETE LISTADODECOSTOS WHERE NROPROY='" + proyecto.NROPROY + "'");
+                    db.Database.ExecuteSqlCommand("DELETE FORMULAPROYECTO WHERE NROPROY='" + proyecto.NROPROY + "'");
+                    db.Database.ExecuteSqlCommand("DELETE TIPOLINEAINVENTARIOPROYECTO WHERE NROPROY='" + proyecto.NROPROY + "'");
+                    db.Database.ExecuteSqlCommand("DELETE LOCALIDADPROYECTO WHERE NROPROY='" + proyecto.NROPROY + "'");
+                    db.Entry(proyecto).State = System.Data.Entity.EntityState.Deleted;
+                    db.SaveChanges();
+                }
                 return Content(Boolean.TrueString);
             }
-            catch
+            catch(Exception ex)
             {//TODO: Log error				
-                return Content(Boolean.FalseString);
+                return Content("<strong class='text-danger'>Resumen del error:</strong><br />" + ex.Message + "<br /><strong class='text-danger'>Detalles del error:</strong><br />" + ex.InnerException);
             }
         }
 

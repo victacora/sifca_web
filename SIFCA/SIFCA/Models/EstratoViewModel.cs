@@ -11,6 +11,7 @@ namespace SIFCA.Models
         public string Nombre { get; set; }
         public double Peso { get; set; }
         public double TamanioMuestra { get; set; }
+        public string ConfiguracionMapa { get; set; }
         public bool Seleccionar { get; set; }
     }
 }
